@@ -42,23 +42,43 @@ a,button,input,select,textarea{cursor:none}
 .fnav-link:hover{color:var(--fg)}
 .fnav-cta{padding:8px 18px;border-radius:999px;background:var(--charcoal);color:var(--bg);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:background .3s var(--ease);white-space:nowrap}
 .fnav-cta:hover{background:var(--primary)}
-.hbg{display:none;background:none;border:none;color:var(--fg);flex-direction:column;gap:5px;padding:4px}.hbg span{width:18px;height:1px;background:currentColor;display:block;transition:all .3s var(--ease)}
+.hbg{display:none;background:none;border:none;color:var(--fg);flex-direction:column;gap:5px;padding:4px}.hbg span{width:18px;height:1px;background:currentColor;display:block;transition:all .3s var(--ease);transform-origin:center}
+.hbg.open span:nth-child(1){transform:translateY(3px) rotate(45deg)}.hbg.open span:nth-child(2){opacity:0}.hbg.open span:nth-child(3){transform:translateY(-3px) rotate(-45deg)}
 .mob-overlay{display:none;position:fixed;inset:0;z-index:199;background:rgba(250,250,249,.96);backdrop-filter:blur(20px);flex-direction:column;align-items:center;justify-content:center;gap:32px}
 .mob-overlay.open{display:flex}
-.mob-overlay a{font-family:var(--font-display);font-size:2rem;color:var(--fg);text-decoration:none;font-style:italic}
+.mob-overlay a{font-family:var(--font-display);font-size:2rem;color:var(--fg);text-decoration:none;font-style:italic;opacity:0;transform:translateY(20px);transition:opacity .4s var(--ease),transform .4s var(--ease)}
+.mob-overlay.open a{opacity:1;transform:none}
+.mob-overlay.open a:nth-child(1){transition-delay:.05s}
+.mob-overlay.open a:nth-child(2){transition-delay:.1s}
+.mob-overlay.open a:nth-child(3){transition-delay:.15s}
+.mob-overlay.open a:nth-child(4){transition-delay:.2s}
+.mob-overlay.open a:nth-child(5){transition-delay:.25s}
 
 /* ===== HERO — ASYMMETRIC OVERLAP ===== */
 .hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;padding:0 clamp(20px,5vw,80px) clamp(60px,8vh,120px);overflow:hidden}
-.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg{position:absolute;inset:0;z-index:0;animation:heroZoom 20s ease-in-out infinite alternate}
+@keyframes heroZoom{0%{transform:scale(1)}100%{transform:scale(1.06)}}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(28,25,23,.7) 0%,rgba(28,25,23,.2) 50%,transparent 100%);z-index:1}
+.hero-glow{position:absolute;bottom:-20%;right:10%;width:clamp(300px,40vw,600px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(217,119,6,.18),transparent 70%);filter:blur(80px);z-index:1;animation:glowFloat 10s ease-in-out infinite}
+@keyframes glowFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-30px) scale(1.05)}}
 .hero-content{position:relative;z-index:2;max-width:720px}
 .hero-label{display:inline-block;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--primary);background:rgba(217,119,6,.12);padding:6px 14px;border-radius:999px;margin-bottom:20px;white-space:nowrap;animation:fadeUp .8s var(--ease) .3s both}
 .hero-title{font-family:var(--font-display);font-size:clamp(2.4rem,5.5vw,4.2rem);color:#fff;line-height:1.15;font-style:italic;margin-bottom:16px;min-height:1.15em}
 .hero-title .tw-line{display:block}
+.hero-title .tw-cursor{display:inline-block;width:2px;height:.85em;background:var(--primary);margin-left:4px;vertical-align:middle;animation:blink 1s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 .hero-sub{font-size:clamp(.85rem,1.2vw,1rem);color:rgba(255,255,255,.7);line-height:1.7;max-width:480px;animation:fadeUp .8s var(--ease) 1.8s both}
 .hero-cta{display:inline-block;margin-top:28px;padding:14px 32px;background:var(--primary);color:#fff;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;border-radius:999px;transition:all .3s var(--ease);animation:fadeUp .8s var(--ease) 2s both}
 .hero-cta:hover{background:var(--primary-dark);transform:translateY(-2px)}
+.hero-cta:active,.fnav-cta:active{transform:scale(.97)}
 .hero-offset{position:absolute;top:12vh;right:clamp(40px,6vw,120px);width:clamp(260px,28vw,420px);aspect-ratio:3/4;border-radius:12px;z-index:2;box-shadow:0 40px 80px rgba(0,0,0,.25);overflow:hidden;animation:fadeIn 1s var(--ease) .5s both}
+.hero-steam{position:absolute;top:-20px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:3}
+.hero-steam span{width:2px;height:30px;background:rgba(255,255,255,.25);border-radius:2px;animation:steam 2.5s ease-in-out infinite;opacity:0}
+.hero-steam span:nth-child(1){animation-delay:0s;height:24px}
+.hero-steam span:nth-child(2){animation-delay:.4s;height:32px}
+.hero-steam span:nth-child(3){animation-delay:.8s;height:20px}
+@keyframes steam{0%{opacity:0;transform:translateY(0) scaleY(1)}30%{opacity:.6}70%{opacity:.3}100%{opacity:0;transform:translateY(-24px) scaleY(1.5)}}
+.hero-line{position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--primary),transparent);z-index:3;opacity:.5}
 .hero-scroll{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,.4);font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;animation:pulse 2s ease-in-out infinite}
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -85,6 +105,7 @@ a,button,input,select,textarea{cursor:none}
 .bento-cap{position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(transparent,rgba(0,0,0,.5));color:#fff}
 .bento-cap h3{font-family:var(--font-display);font-size:1.05rem;font-style:italic;white-space:nowrap}
 .bento-cap p{font-size:.7rem;color:rgba(255,255,255,.65);margin-top:4px;white-space:nowrap}
+.bento .rv:nth-child(2){transition-delay:.08s}.bento .rv:nth-child(3){transition-delay:.16s}.bento .rv:nth-child(4){transition-delay:.08s}.bento .rv:nth-child(5){transition-delay:.16s}.bento .rv:nth-child(6){transition-delay:.24s}
 .b1{grid-column:1/3;grid-row:1/2;min-height:360px}
 .b2{grid-column:3/4;grid-row:1/2}
 .b3{grid-column:4/5;grid-row:1/2}
@@ -106,7 +127,8 @@ a,button,input,select,textarea{cursor:none}
 .menu-title{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.4rem);font-style:italic}
 .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,4vw,56px)}
 .menu-cat h3{font-family:var(--font-display);font-size:1.15rem;font-style:italic;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
-.menu-row{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--border)}
+.menu-row{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--border);transition:padding-left .3s var(--ease)}
+.menu-row:hover{padding-left:8px}
 .menu-row:last-child{border-bottom:none}
 .menu-name{font-size:.85rem;font-weight:400}
 .menu-name span{display:block;font-size:.7rem;color:var(--dim);font-weight:300;margin-top:2px}
@@ -135,7 +157,8 @@ a,button,input,select,textarea{cursor:none}
 .info-row-icon{width:20px;height:20px;flex-shrink:0;color:var(--primary);margin-top:2px}
 .info-row-text{font-size:.85rem;line-height:1.6}
 .info-row-text strong{font-weight:500;display:block;margin-bottom:2px}
-.info-row-text a{color:var(--primary);text-decoration:none}
+.info-row-text a{color:var(--primary);text-decoration:none;background-image:linear-gradient(var(--primary),var(--primary));background-size:0 1px;background-position:0 100%;background-repeat:no-repeat;transition:background-size .3s var(--ease)}
+.info-row-text a:hover{background-size:100% 1px}
 
 /* ===== FOOTER ===== */
 .footer{padding:40px clamp(20px,5vw,80px);background:var(--charcoal);color:rgba(250,250,249,.4);display:flex;justify-content:space-between;align-items:center;font-size:.7rem}
@@ -235,13 +258,15 @@ a,button,input,select,textarea{cursor:none}
 <section class="hero">
   <div class="hero-bg mc-bg-1"></div>
   <div class="hero-overlay"></div>
+  <div class="hero-glow"></div>
   <div class="hero-content">
     <span class="hero-label">Specialty Coffee</span>
     <h1 class="hero-title" id="heroTitle"></h1>
     <p class="hero-sub">신선한 원두를 매일 아침 직접 로스팅합니다.<br>한 잔의 커피가 당신의 하루를 바꿉니다.</p>
     <a href="#showcase" class="hero-cta" data-cursor="work">공간 둘러보기</a>
   </div>
-  <div class="hero-offset mc-bg-2"></div>
+  <div class="hero-offset mc-bg-2"><div class="hero-steam"><span></span><span></span><span></span></div></div>
+  <div class="hero-line"></div>
   <div class="hero-scroll">scroll<svg width="12" height="20" viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="1"><rect x="1" y="1" width="10" height="18" rx="5"/><line x1="6" y1="5" x2="6" y2="9"/></svg></div>
 </section>
 
@@ -382,7 +407,7 @@ a,button,input,select,textarea{cursor:none}
 
 <script>
 /* ===== TYPEWRITER ===== */
-var twLines = ['오늘도, 좋은 커피 한 잔.'];
+var twLines = ['원두 향이 머무는 곳,', '모카.'];
 var twEl = document.getElementById('heroTitle');
 var twCharIdx = 0, twLineIdx = 0;
 function typewrite() {
@@ -402,6 +427,11 @@ function typewrite() {
     twCharIdx = 0;
     twLineIdx++;
     if (twLineIdx < twLines.length) setTimeout(typewrite, 300);
+    else {
+      var cursor = document.createElement('span');
+      cursor.className = 'tw-cursor';
+      twEl.querySelector('.tw-line:last-child').appendChild(cursor);
+    }
   }
 }
 setTimeout(typewrite, 800);
@@ -456,10 +486,11 @@ var hbg = document.querySelector('.hbg');
 var mobOv = document.querySelector('.mob-overlay');
 hbg.addEventListener('click', function() {
   mobOv.classList.toggle('open');
+  hbg.classList.toggle('open');
   document.body.style.overflow = mobOv.classList.contains('open') ? 'hidden' : '';
 });
 mobOv.querySelectorAll('a').forEach(function(a) {
-  a.addEventListener('click', function() { mobOv.classList.remove('open'); document.body.style.overflow = ''; });
+  a.addEventListener('click', function() { mobOv.classList.remove('open'); hbg.classList.remove('open'); document.body.style.overflow = ''; });
 });
 
 /* ===== FLOAT TOP ===== */
