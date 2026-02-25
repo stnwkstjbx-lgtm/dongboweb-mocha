@@ -49,9 +49,7 @@ a,button,input,select,textarea{cursor:none}
 
 /* ===== HERO — ASYMMETRIC OVERLAP ===== */
 .hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;padding:0 clamp(20px,5vw,80px) clamp(60px,8vh,120px);overflow:hidden}
-.hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#D4A574,#8B6914);z-index:0}
-.hero-bg .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.15)}
-.hero-bg .ph svg{width:64px;height:64px}
+.hero-bg{position:absolute;inset:0;z-index:0}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(28,25,23,.7) 0%,rgba(28,25,23,.2) 50%,transparent 100%);z-index:1}
 .hero-content{position:relative;z-index:2;max-width:720px}
 .hero-label{display:inline-block;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--primary);background:rgba(217,119,6,.12);padding:6px 14px;border-radius:999px;margin-bottom:20px;white-space:nowrap;animation:fadeUp .8s var(--ease) .3s both}
@@ -60,9 +58,7 @@ a,button,input,select,textarea{cursor:none}
 .hero-sub{font-size:clamp(.85rem,1.2vw,1rem);color:rgba(255,255,255,.7);line-height:1.7;max-width:480px;animation:fadeUp .8s var(--ease) 1.8s both}
 .hero-cta{display:inline-block;margin-top:28px;padding:14px 32px;background:var(--primary);color:#fff;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;border-radius:999px;transition:all .3s var(--ease);animation:fadeUp .8s var(--ease) 2s both}
 .hero-cta:hover{background:var(--primary-dark);transform:translateY(-2px)}
-.hero-offset{position:absolute;top:12vh;right:clamp(40px,6vw,120px);width:clamp(260px,28vw,420px);aspect-ratio:3/4;background:linear-gradient(135deg,#A0845C,#5C4A2E);border-radius:12px;z-index:2;box-shadow:0 40px 80px rgba(0,0,0,.25);overflow:hidden;animation:fadeIn 1s var(--ease) .5s both}
-.hero-offset .ph{display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:rgba(255,255,255,.15)}
-.hero-offset .ph svg{width:48px;height:48px}
+.hero-offset{position:absolute;top:12vh;right:clamp(40px,6vw,120px);width:clamp(260px,28vw,420px);aspect-ratio:3/4;border-radius:12px;z-index:2;box-shadow:0 40px 80px rgba(0,0,0,.25);overflow:hidden;animation:fadeIn 1s var(--ease) .5s both}
 .hero-scroll{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,.4);font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;animation:pulse 2s ease-in-out infinite}
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -86,8 +82,6 @@ a,button,input,select,textarea{cursor:none}
 .bento-item:hover{transform:scale(1.015)}
 .bento-item .bg{position:absolute;inset:0;transition:transform .6s var(--ease)}
 .bento-item:hover .bg{transform:scale(1.05)}
-.bento-item .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.2)}
-.bento-item .ph svg{width:40px;height:40px}
 .bento-cap{position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(transparent,rgba(0,0,0,.5));color:#fff}
 .bento-cap h3{font-family:var(--font-display);font-size:1.05rem;font-style:italic;white-space:nowrap}
 .bento-cap p{font-size:.7rem;color:rgba(255,255,255,.65);margin-top:4px;white-space:nowrap}
@@ -97,12 +91,12 @@ a,button,input,select,textarea{cursor:none}
 .b4{grid-column:1/2;grid-row:2/3}
 .b5{grid-column:2/4;grid-row:2/3;min-height:300px}
 .b6{grid-column:4/5;grid-row:2/3}
-.mc-bg-1{background:linear-gradient(135deg,#D4A574,#8B6914)}
-.mc-bg-2{background:linear-gradient(135deg,#A0845C,#5C4A2E)}
-.mc-bg-3{background:linear-gradient(135deg,#C8A882,#7A5C34)}
-.mc-bg-4{background:linear-gradient(135deg,#B8956A,#6B4D2A)}
-.mc-bg-5{background:linear-gradient(135deg,#DEB887,#8B6E4E)}
-.mc-bg-6{background:linear-gradient(135deg,#C4956A,#6D5238)}
+.mc-bg-1{background:url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80') center/cover no-repeat}
+.mc-bg-2{background:url('https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?w=800&q=80') center/cover no-repeat}
+.mc-bg-3{background:url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&q=80') center/cover no-repeat}
+.mc-bg-4{background:url('https://images.unsplash.com/photo-1559496417-e7f25cb247f3?w=800&q=80') center/cover no-repeat}
+.mc-bg-5{background:url('https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800&q=80') center/cover no-repeat}
+.mc-bg-6{background:url('https://images.unsplash.com/photo-1442975631115-c4f7b05b8a2c?w=800&q=80') center/cover no-repeat}
 
 /* ===== MENU — LIGHT BAND ===== */
 .menu{padding:clamp(80px,12vw,160px) clamp(20px,5vw,80px);background:var(--bg)}
@@ -124,12 +118,10 @@ a,button,input,select,textarea{cursor:none}
 .pband-cell{position:relative;flex:0 0 280px;height:200px;border-radius:8px;overflow:hidden;cursor:pointer}
 .pband-cell .bg{position:absolute;inset:0;transition:transform .5s var(--ease)}
 .pband-cell:hover .bg{transform:scale(1.06)}
-.pband-cell .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.15)}
-.pband-cell .ph svg{width:32px;height:32px}
-.mc-pb-1{background:linear-gradient(135deg,#BFA07A,#7A5C34)}
-.mc-pb-2{background:linear-gradient(135deg,#A89070,#5E4830)}
-.mc-pb-3{background:linear-gradient(135deg,#C4A882,#8B6E4E)}
-.mc-pb-4{background:linear-gradient(135deg,#D4B896,#8B7050)}
+.mc-pb-1{background:url('https://images.unsplash.com/photo-1498804103079-a6351b050096?w=800&q=80') center/cover no-repeat}
+.mc-pb-2{background:url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&q=80') center/cover no-repeat}
+.mc-pb-3{background:url('https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=800&q=80') center/cover no-repeat}
+.mc-pb-4{background:url('https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=800&q=80') center/cover no-repeat}
 @keyframes pscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
 /* ===== INFO ===== */
@@ -241,7 +233,7 @@ a,button,input,select,textarea{cursor:none}
 
 <!-- ===== HERO ===== -->
 <section class="hero">
-  <div class="hero-bg mc-bg-1"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div>
+  <div class="hero-bg mc-bg-1"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <span class="hero-label">Specialty Coffee</span>
@@ -249,7 +241,7 @@ a,button,input,select,textarea{cursor:none}
     <p class="hero-sub">신선한 원두를 매일 아침 직접 로스팅합니다.<br>한 잔의 커피가 당신의 하루를 바꿉니다.</p>
     <a href="#showcase" class="hero-cta" data-cursor="work">공간 둘러보기</a>
   </div>
-  <div class="hero-offset mc-bg-2"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div>
+  <div class="hero-offset mc-bg-2"></div>
   <div class="hero-scroll">scroll<svg width="12" height="20" viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="1"><rect x="1" y="1" width="10" height="18" rx="5"/><line x1="6" y1="5" x2="6" y2="9"/></svg></div>
 </section>
 
@@ -271,27 +263,27 @@ a,button,input,select,textarea{cursor:none}
   </div>
   <div class="bento">
     <div class="bento-item b1 rv" data-cursor="view">
-      <div class="bg mc-bg-1"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div>
+      <div class="bg mc-bg-1"></div>
       <div class="bento-cap"><h3>로스팅 바</h3><p>매일 아침, 원두를 볶는 곳</p></div>
     </div>
     <div class="bento-item b2 rv" data-cursor="view">
-      <div class="bg mc-bg-3"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div>
+      <div class="bg mc-bg-3"></div>
       <div class="bento-cap"><h3>1층 홀</h3><p>원목과 조명의 따뜻함</p></div>
     </div>
     <div class="bento-item b3 rv" data-cursor="view">
-      <div class="bg mc-bg-4"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div>
+      <div class="bg mc-bg-4"></div>
       <div class="bento-cap"><h3>핸드드립 바</h3><p>눈앞에서 추출하는 한 잔</p></div>
     </div>
     <div class="bento-item b4 rv" data-cursor="view">
-      <div class="bg mc-bg-5"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div>
+      <div class="bg mc-bg-5"></div>
       <div class="bento-cap"><h3>원두 진열대</h3><p>산지별 스페셜티 원두</p></div>
     </div>
     <div class="bento-item b5 rv" data-cursor="view">
-      <div class="bg mc-bg-6"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div>
+      <div class="bg mc-bg-6"></div>
       <div class="bento-cap"><h3>2층 라운지</h3><p>여유로운 오후를 위한 공간</p></div>
     </div>
     <div class="bento-item b6 rv" data-cursor="view">
-      <div class="bg mc-bg-2"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div>
+      <div class="bg mc-bg-2"></div>
       <div class="bento-cap"><h3>테라스</h3><p>바람과 커피 향이 만나는 곳</p></div>
     </div>
   </div>
@@ -328,15 +320,15 @@ a,button,input,select,textarea{cursor:none}
 <!-- ===== PHOTO BAND ===== -->
 <section class="pband">
   <div class="pband-track">
-    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-1"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div></div>
-    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-2"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div></div>
-    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-3"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div></div>
-    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-4"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div></div>
+    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-1"></div></div>
+    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-2"></div></div>
+    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-3"></div></div>
+    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-4"></div></div>
     <!-- duplicate for infinite scroll -->
-    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-1"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div></div>
-    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-2"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div></div>
-    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-3"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div></div>
-    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-4"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div></div>
+    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-1"></div></div>
+    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-2"></div></div>
+    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-3"></div></div>
+    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-4"></div></div>
   </div>
 </section>
 
@@ -484,18 +476,17 @@ var lbCount = document.getElementById('lbCount');
 var lbCap = document.getElementById('lbCap');
 var lbItems = [];
 var lbIdx = 0;
-var phSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>';
 var bgMap = {
-  'mc-bg-1': 'linear-gradient(135deg, #D4A574, #8B6914)',
-  'mc-bg-2': 'linear-gradient(135deg, #A0845C, #5C4A2E)',
-  'mc-bg-3': 'linear-gradient(135deg, #C8A882, #7A5C34)',
-  'mc-bg-4': 'linear-gradient(135deg, #B8956A, #6B4D2A)',
-  'mc-bg-5': 'linear-gradient(135deg, #DEB887, #8B6E4E)',
-  'mc-bg-6': 'linear-gradient(135deg, #C4956A, #6D5238)',
-  'mc-pb-1': 'linear-gradient(135deg, #BFA07A, #7A5C34)',
-  'mc-pb-2': 'linear-gradient(135deg, #A89070, #5E4830)',
-  'mc-pb-3': 'linear-gradient(135deg, #C4A882, #8B6E4E)',
-  'mc-pb-4': 'linear-gradient(135deg, #D4B896, #8B7050)'
+  'mc-bg-1': 'url(https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80) center/cover no-repeat',
+  'mc-bg-2': 'url(https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?w=1200&q=80) center/cover no-repeat',
+  'mc-bg-3': 'url(https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1200&q=80) center/cover no-repeat',
+  'mc-bg-4': 'url(https://images.unsplash.com/photo-1559496417-e7f25cb247f3?w=1200&q=80) center/cover no-repeat',
+  'mc-bg-5': 'url(https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1200&q=80) center/cover no-repeat',
+  'mc-bg-6': 'url(https://images.unsplash.com/photo-1442975631115-c4f7b05b8a2c?w=1200&q=80) center/cover no-repeat',
+  'mc-pb-1': 'url(https://images.unsplash.com/photo-1498804103079-a6351b050096?w=1200&q=80) center/cover no-repeat',
+  'mc-pb-2': 'url(https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&q=80) center/cover no-repeat',
+  'mc-pb-3': 'url(https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=1200&q=80) center/cover no-repeat',
+  'mc-pb-4': 'url(https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=1200&q=80) center/cover no-repeat'
 };
 
 document.querySelectorAll('.bento-item').forEach(function(item, i) {
