@@ -63,10 +63,10 @@ a,button,input,select,textarea{cursor:none}
 @keyframes glowFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-30px) scale(1.05)}}
 .hero-content{position:relative;z-index:2;max-width:720px}
 .hero-label{display:inline-block;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--primary);background:rgba(217,119,6,.12);padding:6px 14px;border-radius:999px;margin-bottom:20px;white-space:nowrap;animation:fadeUp .8s var(--ease) .3s both}
-.hero-title{font-family:var(--font-display);font-size:clamp(2.4rem,5.5vw,4.2rem);color:#fff;line-height:1.15;font-style:italic;margin-bottom:16px;min-height:1.15em}
-.hero-title .tw-line{display:block}
-.hero-title .tw-cursor{display:inline-block;width:2px;height:.85em;background:var(--primary);margin-left:4px;vertical-align:middle;animation:blink 1s step-end infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hero-title{font-family:var(--font-display);font-size:clamp(2.4rem,5.5vw,4.2rem);color:#fff;line-height:1.15;font-style:italic;margin-bottom:16px}
+.hero-title .line{display:block;opacity:0;transform:translateY(20px);animation:fadeUp .9s var(--ease) both}
+.hero-title .line:nth-child(1){animation-delay:.5s}
+.hero-title .line:nth-child(2){animation-delay:.8s}
 .hero-sub{font-size:clamp(.85rem,1.2vw,1rem);color:rgba(255,255,255,.7);line-height:1.7;max-width:480px;animation:fadeUp .8s var(--ease) 1.8s both}
 .hero-cta{display:inline-block;margin-top:28px;padding:14px 32px;background:var(--primary);color:#fff;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;border-radius:999px;transition:all .3s var(--ease);animation:fadeUp .8s var(--ease) 2s both}
 .hero-cta:hover{background:var(--primary-dark);transform:translateY(-2px)}
@@ -261,7 +261,7 @@ a,button,input,select,textarea{cursor:none}
   <div class="hero-glow"></div>
   <div class="hero-content">
     <span class="hero-label">Specialty Coffee</span>
-    <h1 class="hero-title" id="heroTitle"></h1>
+    <h1 class="hero-title"><span class="line">원두 향이 머무는 곳,</span><span class="line">모카.</span></h1>
     <p class="hero-sub">신선한 원두를 매일 아침 직접 로스팅합니다.<br>한 잔의 커피가 당신의 하루를 바꿉니다.</p>
     <a href="#showcase" class="hero-cta" data-cursor="work">공간 둘러보기</a>
   </div>
@@ -406,36 +406,6 @@ a,button,input,select,textarea{cursor:none}
 <a href="https://pf.kakao.com/" target="_blank" rel="noopener noreferrer" class="kakao-float" data-cursor="nav"><svg viewBox="0 0 24 24" fill="#3C1E1E"><path d="M12 3C6.48 3 2 6.58 2 10.9c0 2.78 1.86 5.22 4.65 6.6-.15.53-.96 3.41-1 3.56 0 .08.03.16.09.21.07.04.16.05.23.01.31-.04 3.6-2.36 4.15-2.74.6.09 1.22.13 1.88.13 5.52 0 10-3.58 10-7.97C22 6.58 17.52 3 12 3z"/></svg></a>
 
 <script>
-/* ===== TYPEWRITER ===== */
-var twLines = ['원두 향이 머무는 곳,', '모카.'];
-var twEl = document.getElementById('heroTitle');
-var twCharIdx = 0, twLineIdx = 0;
-function typewrite() {
-  if (twLineIdx >= twLines.length) return;
-  var line = twLines[twLineIdx];
-  if (twCharIdx === 0) {
-    var span = document.createElement('span');
-    span.className = 'tw-line';
-    twEl.appendChild(span);
-  }
-  var curSpan = twEl.querySelectorAll('.tw-line')[twLineIdx];
-  if (twCharIdx < line.length) {
-    curSpan.textContent = line.substring(0, twCharIdx + 1);
-    twCharIdx++;
-    setTimeout(typewrite, 60 + Math.random() * 40);
-  } else {
-    twCharIdx = 0;
-    twLineIdx++;
-    if (twLineIdx < twLines.length) setTimeout(typewrite, 300);
-    else {
-      var cursor = document.createElement('span');
-      cursor.className = 'tw-cursor';
-      twEl.querySelector('.tw-line:last-child').appendChild(cursor);
-    }
-  }
-}
-setTimeout(typewrite, 800);
-
 /* ===== CURSOR ===== */
 var cur = document.querySelector('.cur');
 var ring = document.querySelector('.cur-ring');
