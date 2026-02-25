@@ -1,0 +1,579 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>모카 — 커피전문점</title>
+<meta name="description" content="한 잔의 커피가 하루를 바꿉니다. 신선한 원두와 정성스러운 핸드드립, 모카 커피전문점.">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500;700&family=Instrument+Serif:ital@0;1&family=Noto+Sans+KR:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#FAFAF9;--fg:#1C1917;--primary:#D97706;--primary-dark:#B45309;
+  --dim:#78716C;--border:#E7E5E4;--card:#FFFFFF;--card-hover:#F5F5F4;
+  --charcoal:#44403C;--overlay:rgba(28,25,23,.6);
+  --ease:cubic-bezier(.16,1,.3,1);
+  --font-display:'Instrument Serif',serif;
+  --font-body:'DM Sans','Noto Sans KR',sans-serif;
+  --font-mono:'DM Mono',monospace;
+  --selection-bg:#D97706;--selection-fg:#FAFAF9;
+}
+html{scroll-behavior:smooth;cursor:none}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg);overflow-x:hidden;font-weight:300;cursor:none;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word}
+::selection{background:var(--selection-bg);color:var(--selection-fg)}
+a,button,input,select,textarea{cursor:none}
+::-webkit-scrollbar{width:0}
+
+/* ===== CURSOR ===== */
+.cur{position:fixed;width:8px;height:8px;border-radius:50%;background:var(--fg);pointer-events:none;z-index:10000;mix-blend-mode:difference;transition:transform .1s}
+.cur-ring{position:fixed;width:36px;height:36px;border-radius:50%;border:1px solid rgba(28,25,23,.12);pointer-events:none;z-index:9999;transition:all .25s var(--ease)}
+.cur-ring.hover{width:80px;height:80px;border-color:var(--primary);background:rgba(217,119,6,.06)}
+.cur-ring.nav-hover{width:56px;height:56px;background:rgba(217,119,6,.08);border-color:var(--primary)}
+.cur-text{position:fixed;pointer-events:none;z-index:10001;font-size:.55rem;color:var(--primary);letter-spacing:.15em;text-transform:uppercase;opacity:0;transition:opacity .3s;font-weight:500}
+.cur-text.show{opacity:1}
+
+/* ===== FLOATING PILL NAV ===== */
+.fnav{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:200;display:flex;align-items:center;gap:8px;padding:10px 12px 10px 20px;border-radius:999px;background:rgba(250,250,249,.82);backdrop-filter:blur(20px);border:1px solid var(--border);box-shadow:0 8px 32px rgba(28,25,23,.08);transition:all .4s var(--ease)}
+.fnav-logo{font-family:var(--font-display);font-size:1rem;text-decoration:none;color:var(--fg);font-style:italic;white-space:nowrap}
+.fnav-sep{width:1px;height:16px;background:var(--border);margin:0 4px}
+.fnav-links{display:flex;gap:16px}
+.fnav-link{font-size:.6rem;color:var(--dim);text-decoration:none;letter-spacing:.12em;text-transform:uppercase;transition:color .3s}
+.fnav-link:hover{color:var(--fg)}
+.fnav-cta{padding:8px 18px;border-radius:999px;background:var(--charcoal);color:var(--bg);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:background .3s var(--ease);white-space:nowrap}
+.fnav-cta:hover{background:var(--primary)}
+.hbg{display:none;background:none;border:none;color:var(--fg);flex-direction:column;gap:5px;padding:4px}.hbg span{width:18px;height:1px;background:currentColor;display:block;transition:all .3s var(--ease)}
+.mob-overlay{display:none;position:fixed;inset:0;z-index:199;background:rgba(250,250,249,.96);backdrop-filter:blur(20px);flex-direction:column;align-items:center;justify-content:center;gap:32px}
+.mob-overlay.open{display:flex}
+.mob-overlay a{font-family:var(--font-display);font-size:2rem;color:var(--fg);text-decoration:none;font-style:italic}
+
+/* ===== HERO — ASYMMETRIC OVERLAP ===== */
+.hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;padding:0 clamp(20px,5vw,80px) clamp(60px,8vh,120px);overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#D4A574,#8B6914);z-index:0}
+.hero-bg .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.15)}
+.hero-bg .ph svg{width:64px;height:64px}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(28,25,23,.7) 0%,rgba(28,25,23,.2) 50%,transparent 100%);z-index:1}
+.hero-content{position:relative;z-index:2;max-width:720px}
+.hero-label{display:inline-block;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--primary);background:rgba(217,119,6,.12);padding:6px 14px;border-radius:999px;margin-bottom:20px;white-space:nowrap;animation:fadeUp .8s var(--ease) .3s both}
+.hero-title{font-family:var(--font-display);font-size:clamp(2.4rem,5.5vw,4.2rem);color:#fff;line-height:1.15;font-style:italic;margin-bottom:16px;min-height:1.15em}
+.hero-title .tw-line{display:block}
+.hero-sub{font-size:clamp(.85rem,1.2vw,1rem);color:rgba(255,255,255,.7);line-height:1.7;max-width:480px;animation:fadeUp .8s var(--ease) 1.8s both}
+.hero-cta{display:inline-block;margin-top:28px;padding:14px 32px;background:var(--primary);color:#fff;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;border-radius:999px;transition:all .3s var(--ease);animation:fadeUp .8s var(--ease) 2s both}
+.hero-cta:hover{background:var(--primary-dark);transform:translateY(-2px)}
+.hero-offset{position:absolute;top:12vh;right:clamp(40px,6vw,120px);width:clamp(260px,28vw,420px);aspect-ratio:3/4;background:linear-gradient(135deg,#A0845C,#5C4A2E);border-radius:12px;z-index:2;box-shadow:0 40px 80px rgba(0,0,0,.25);overflow:hidden;animation:fadeIn 1s var(--ease) .5s both}
+.hero-offset .ph{display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:rgba(255,255,255,.15)}
+.hero-offset .ph svg{width:48px;height:48px}
+.hero-scroll{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,.4);font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;animation:pulse 2s ease-in-out infinite}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.8}}
+
+/* ===== ABOUT — IMMERSIVE DARK BAND ===== */
+.about{padding:clamp(80px,12vw,160px) clamp(20px,5vw,80px);background:var(--charcoal);color:var(--bg)}
+.about-inner{max-width:900px;margin:0 auto;text-align:center}
+.about-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--primary);margin-bottom:20px;white-space:nowrap}
+.about-title{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.4rem);font-style:italic;line-height:1.3;margin-bottom:28px}
+.about-desc{font-size:clamp(.85rem,1.1vw,.95rem);line-height:1.8;color:rgba(250,250,249,.65);max-width:640px;margin:0 auto}
+.about-quote{margin-top:40px;font-family:var(--font-display);font-size:clamp(1rem,1.8vw,1.3rem);font-style:italic;color:var(--primary);opacity:.8}
+
+/* ===== SHOWCASE — BENTO GRID ===== */
+.showcase{padding:clamp(80px,12vw,160px) clamp(20px,5vw,80px);background:var(--bg)}
+.showcase-header{text-align:center;margin-bottom:clamp(40px,6vw,72px)}
+.showcase-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--primary);margin-bottom:12px;white-space:nowrap}
+.showcase-title{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.4rem);font-style:italic}
+.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto auto;gap:16px;max-width:1200px;margin:0 auto}
+.bento-item{position:relative;border-radius:12px;overflow:hidden;min-height:240px;cursor:pointer;transition:transform .4s var(--ease)}
+.bento-item:hover{transform:scale(1.015)}
+.bento-item .bg{position:absolute;inset:0;transition:transform .6s var(--ease)}
+.bento-item:hover .bg{transform:scale(1.05)}
+.bento-item .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.2)}
+.bento-item .ph svg{width:40px;height:40px}
+.bento-cap{position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(transparent,rgba(0,0,0,.5));color:#fff}
+.bento-cap h3{font-family:var(--font-display);font-size:1.05rem;font-style:italic;white-space:nowrap}
+.bento-cap p{font-size:.7rem;color:rgba(255,255,255,.65);margin-top:4px;white-space:nowrap}
+.b1{grid-column:1/3;grid-row:1/2;min-height:360px}
+.b2{grid-column:3/4;grid-row:1/2}
+.b3{grid-column:4/5;grid-row:1/2}
+.b4{grid-column:1/2;grid-row:2/3}
+.b5{grid-column:2/4;grid-row:2/3;min-height:300px}
+.b6{grid-column:4/5;grid-row:2/3}
+.mc-bg-1{background:linear-gradient(135deg,#D4A574,#8B6914)}
+.mc-bg-2{background:linear-gradient(135deg,#A0845C,#5C4A2E)}
+.mc-bg-3{background:linear-gradient(135deg,#C8A882,#7A5C34)}
+.mc-bg-4{background:linear-gradient(135deg,#B8956A,#6B4D2A)}
+.mc-bg-5{background:linear-gradient(135deg,#DEB887,#8B6E4E)}
+.mc-bg-6{background:linear-gradient(135deg,#C4956A,#6D5238)}
+
+/* ===== MENU — LIGHT BAND ===== */
+.menu{padding:clamp(80px,12vw,160px) clamp(20px,5vw,80px);background:var(--bg)}
+.menu-inner{max-width:960px;margin:0 auto}
+.menu-header{text-align:center;margin-bottom:clamp(40px,6vw,64px)}
+.menu-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--primary);margin-bottom:12px;white-space:nowrap}
+.menu-title{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.4rem);font-style:italic}
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,4vw,56px)}
+.menu-cat h3{font-family:var(--font-display);font-size:1.15rem;font-style:italic;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.menu-row{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--border)}
+.menu-row:last-child{border-bottom:none}
+.menu-name{font-size:.85rem;font-weight:400}
+.menu-name span{display:block;font-size:.7rem;color:var(--dim);font-weight:300;margin-top:2px}
+.menu-price{font-family:var(--font-mono);font-size:.8rem;color:var(--primary);white-space:nowrap}
+
+/* ===== PHOTO BAND — DARK IMMERSIVE ===== */
+.pband{padding:clamp(60px,8vw,100px) 0;background:var(--charcoal);overflow:hidden}
+.pband-track{display:flex;gap:16px;animation:pscroll 30s linear infinite;width:max-content}
+.pband-cell{position:relative;flex:0 0 280px;height:200px;border-radius:8px;overflow:hidden;cursor:pointer}
+.pband-cell .bg{position:absolute;inset:0;transition:transform .5s var(--ease)}
+.pband-cell:hover .bg{transform:scale(1.06)}
+.pband-cell .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.15)}
+.pband-cell .ph svg{width:32px;height:32px}
+.mc-pb-1{background:linear-gradient(135deg,#BFA07A,#7A5C34)}
+.mc-pb-2{background:linear-gradient(135deg,#A89070,#5E4830)}
+.mc-pb-3{background:linear-gradient(135deg,#C4A882,#8B6E4E)}
+.mc-pb-4{background:linear-gradient(135deg,#D4B896,#8B7050)}
+@keyframes pscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ===== INFO ===== */
+.info{padding:clamp(80px,12vw,160px) clamp(20px,5vw,80px);background:var(--bg)}
+.info-inner{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,80px)}
+.info-left .info-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--primary);margin-bottom:12px;white-space:nowrap}
+.info-left .info-title{font-family:var(--font-display);font-size:clamp(1.4rem,2.5vw,2rem);font-style:italic;margin-bottom:20px}
+.info-left .info-desc{font-size:.85rem;color:var(--dim);line-height:1.7}
+.info-right{display:flex;flex-direction:column;gap:20px}
+.info-row{display:flex;gap:16px;align-items:flex-start}
+.info-row-icon{width:20px;height:20px;flex-shrink:0;color:var(--primary);margin-top:2px}
+.info-row-text{font-size:.85rem;line-height:1.6}
+.info-row-text strong{font-weight:500;display:block;margin-bottom:2px}
+.info-row-text a{color:var(--primary);text-decoration:none}
+
+/* ===== FOOTER ===== */
+.footer{padding:40px clamp(20px,5vw,80px);background:var(--charcoal);color:rgba(250,250,249,.4);display:flex;justify-content:space-between;align-items:center;font-size:.7rem}
+.footer a{color:rgba(250,250,249,.4);text-decoration:none;transition:color .3s}
+.footer a:hover{color:var(--primary)}
+
+/* ===== LIGHTBOX ===== */
+.lb-overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(28,25,23,.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;flex-direction:column}
+.lb-overlay.open{display:flex}
+.lb-inner{width:min(85vw,900px);aspect-ratio:4/3;border-radius:12px;background:var(--charcoal);transition:opacity .3s var(--ease);background-size:cover;background-position:center}
+.lb-close{position:absolute;top:24px;right:24px;width:40px;height:40px;background:none;border:1px solid rgba(255,255,255,.15);border-radius:50%;color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:border-color .3s}
+.lb-close:hover{border-color:var(--primary)}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;background:none;border:1px solid rgba(255,255,255,.15);border-radius:50%;color:#fff;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:border-color .3s}
+.lb-nav:hover{border-color:var(--primary)}
+.lb-prev{left:24px}
+.lb-next{right:24px}
+.lb-meta{display:flex;align-items:center;gap:16px;margin-top:16px;color:rgba(255,255,255,.5);font-size:.75rem}
+.lb-cap{font-family:var(--font-display);font-style:italic}
+
+/* ===== FLOATING BUTTONS ===== */
+.float-top{position:fixed;bottom:92px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--fg);text-decoration:none;z-index:190;box-shadow:0 4px 16px rgba(0,0,0,.06);opacity:0;pointer-events:none;transition:all .3s var(--ease)}
+.float-top.show{opacity:1;pointer-events:auto}
+.float-top:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.kakao-float{position:fixed;bottom:28px;right:28px;width:52px;height:52px;border-radius:50%;background:#FEE500;display:flex;align-items:center;justify-content:center;z-index:190;box-shadow:0 4px 24px rgba(0,0,0,.06);transition:all .3s var(--ease);text-decoration:none}
+.kakao-float:hover{transform:translateY(-4px) scale(1.06);box-shadow:0 12px 32px rgba(0,0,0,.1)}
+.kakao-float svg{width:26px;height:26px}
+
+/* ===== SCROLL REVEAL ===== */
+.rv{opacity:0;transform:translateY(30px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.rv.show{opacity:1;transform:none}
+
+/* ===== TABLET ===== */
+@media(max-width:1024px)and(min-width:769px){
+  .bento{grid-template-columns:repeat(2,1fr);grid-template-rows:auto}
+  .b1,.b5{grid-column:span 2}
+  .b2,.b3,.b4,.b6{grid-column:span 1}
+  .menu-grid{gap:32px}
+  .hero-offset{width:240px;right:40px}
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:768px){
+  br{display:none}
+  .fnav{bottom:16px;padding:8px 10px 8px 16px;gap:6px}
+  .fnav-links{display:none}
+  .fnav-sep{display:none}
+  .hbg{display:flex}
+  .hero{min-height:85vh;padding:0 20px 60px;align-items:flex-end}
+  .hero-offset{display:none}
+  .hero-title{font-size:clamp(1.8rem,8vw,2.4rem)}
+  .bento{grid-template-columns:1fr;grid-template-rows:auto}
+  .b1,.b2,.b3,.b4,.b5,.b6{grid-column:1;min-height:220px}
+  .b1,.b5{min-height:260px}
+  .menu-grid{grid-template-columns:1fr;gap:40px}
+  .info-inner{grid-template-columns:1fr;gap:40px}
+  .pband-cell{flex:0 0 220px;height:160px}
+  .lb-inner{width:92vw}
+  .lb-prev{left:8px}.lb-next{right:8px}
+  .footer{flex-direction:column;gap:12px;text-align:center}
+  .kakao-float{bottom:16px;right:16px;width:46px;height:46px}
+  .float-top{bottom:72px;right:16px;width:38px;height:38px}
+}
+@media(max-width:480px){
+  .hero-title{font-size:1.6rem}
+  .bento-item{min-height:180px}
+}
+</style>
+</head>
+<body id="top">
+<!-- Cursor -->
+<div class="cur"></div><div class="cur-ring"></div><div class="cur-text"></div>
+
+<!-- Floating Pill Nav -->
+<nav class="fnav">
+  <a href="#top" class="fnav-logo" data-cursor="nav">모카</a>
+  <div class="fnav-sep"></div>
+  <div class="fnav-links">
+    <a href="#about" class="fnav-link" data-cursor="nav">About</a>
+    <a href="#showcase" class="fnav-link" data-cursor="nav">Space</a>
+    <a href="#menu" class="fnav-link" data-cursor="nav">Menu</a>
+    <a href="#info" class="fnav-link" data-cursor="nav">Info</a>
+  </div>
+  <a href="https://pf.kakao.com/" target="_blank" rel="noopener noreferrer" class="fnav-cta" data-cursor="nav">상담하기</a>
+  <button class="hbg" aria-label="메뉴" data-cursor="nav"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- Mobile Overlay -->
+<div class="mob-overlay">
+  <a href="#about">About</a>
+  <a href="#showcase">Space</a>
+  <a href="#menu">Menu</a>
+  <a href="#info">Info</a>
+  <a href="https://pf.kakao.com/" target="_blank" rel="noopener noreferrer">상담하기</a>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-bg mc-bg-1"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-label">Specialty Coffee</span>
+    <h1 class="hero-title" id="heroTitle"></h1>
+    <p class="hero-sub">신선한 원두를 매일 아침 직접 로스팅합니다.<br>한 잔의 커피가 당신의 하루를 바꿉니다.</p>
+    <a href="#showcase" class="hero-cta" data-cursor="work">공간 둘러보기</a>
+  </div>
+  <div class="hero-offset mc-bg-2"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div>
+  <div class="hero-scroll">scroll<svg width="12" height="20" viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="1"><rect x="1" y="1" width="10" height="18" rx="5"/><line x1="6" y1="5" x2="6" y2="9"/></svg></div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section class="about" id="about">
+  <div class="about-inner rv">
+    <p class="about-label">About Mocha</p>
+    <h2 class="about-title">좋은 커피는<br>좋은 원두에서 시작됩니다</h2>
+    <p class="about-desc">모카는 2018년, 커피 한 잔이 가진 힘을 믿는 두 사람이 시작했습니다. 산지에서 직접 선별한 스페셜티 원두를 매일 아침 소량 로스팅하고, 한 잔 한 잔 정성스럽게 추출합니다. 공간 곳곳에 스며든 원목의 따뜻함과 은은한 원두 향이 일상에 여유를 더합니다.</p>
+    <p class="about-quote">"커피는 단순한 음료가 아니라, 하루를 여는 의식입니다."</p>
+  </div>
+</section>
+
+<!-- ===== SHOWCASE — BENTO GRID ===== -->
+<section class="showcase" id="showcase">
+  <div class="showcase-header rv">
+    <p class="showcase-label">Our Space</p>
+    <h2 class="showcase-title">모카의 공간</h2>
+  </div>
+  <div class="bento">
+    <div class="bento-item b1 rv" data-cursor="view">
+      <div class="bg mc-bg-1"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div>
+      <div class="bento-cap"><h3>로스팅 바</h3><p>매일 아침, 원두를 볶는 곳</p></div>
+    </div>
+    <div class="bento-item b2 rv" data-cursor="view">
+      <div class="bg mc-bg-3"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div>
+      <div class="bento-cap"><h3>1층 홀</h3><p>원목과 조명의 따뜻함</p></div>
+    </div>
+    <div class="bento-item b3 rv" data-cursor="view">
+      <div class="bg mc-bg-4"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div>
+      <div class="bento-cap"><h3>핸드드립 바</h3><p>눈앞에서 추출하는 한 잔</p></div>
+    </div>
+    <div class="bento-item b4 rv" data-cursor="view">
+      <div class="bg mc-bg-5"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div>
+      <div class="bento-cap"><h3>원두 진열대</h3><p>산지별 스페셜티 원두</p></div>
+    </div>
+    <div class="bento-item b5 rv" data-cursor="view">
+      <div class="bg mc-bg-6"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div>
+      <div class="bento-cap"><h3>2층 라운지</h3><p>여유로운 오후를 위한 공간</p></div>
+    </div>
+    <div class="bento-item b6 rv" data-cursor="view">
+      <div class="bg mc-bg-2"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div>
+      <div class="bento-cap"><h3>테라스</h3><p>바람과 커피 향이 만나는 곳</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MENU ===== -->
+<section class="menu" id="menu">
+  <div class="menu-inner">
+    <div class="menu-header rv">
+      <p class="menu-label">Menu</p>
+      <h2 class="menu-title">대표 메뉴</h2>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-cat rv">
+        <h3>Coffee</h3>
+        <div class="menu-row"><div class="menu-name">에스프레소<span>에티오피아 예가체프 싱글오리진</span></div><div class="menu-price">4,500</div></div>
+        <div class="menu-row"><div class="menu-name">아메리카노<span>하우스 블렌드 / 싱글오리진 선택</span></div><div class="menu-price">5,000</div></div>
+        <div class="menu-row"><div class="menu-name">카페라떼<span>부드러운 우유 거품과 에스프레소</span></div><div class="menu-price">5,500</div></div>
+        <div class="menu-row"><div class="menu-name">핸드드립<span>오늘의 원두로 한 잔씩 추출</span></div><div class="menu-price">6,500</div></div>
+        <div class="menu-row"><div class="menu-name">콜드브루<span>18시간 저온 추출</span></div><div class="menu-price">6,000</div></div>
+      </div>
+      <div class="menu-cat rv">
+        <h3>Non-Coffee &amp; Dessert</h3>
+        <div class="menu-row"><div class="menu-name">말차라떼<span>교토산 유기농 말차</span></div><div class="menu-price">6,000</div></div>
+        <div class="menu-row"><div class="menu-name">얼그레이 밀크티<span>트와이닝 찻잎 직접 우림</span></div><div class="menu-price">5,500</div></div>
+        <div class="menu-row"><div class="menu-name">자몽 에이드<span>생과일 착즙</span></div><div class="menu-price">5,500</div></div>
+        <div class="menu-row"><div class="menu-name">당근 케이크<span>매장 직접 제조</span></div><div class="menu-price">6,500</div></div>
+        <div class="menu-row"><div class="menu-name">까눌레<span>매일 한정 수량</span></div><div class="menu-price">4,000</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PHOTO BAND ===== -->
+<section class="pband">
+  <div class="pband-track">
+    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-1"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div></div>
+    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-2"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div></div>
+    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-3"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div></div>
+    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-4"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div></div>
+    <!-- duplicate for infinite scroll -->
+    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-1"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div></div>
+    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-2"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div></div>
+    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-3"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div></div>
+    <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-4"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div></div>
+  </div>
+</section>
+
+<!-- ===== INFO ===== -->
+<section class="info" id="info">
+  <div class="info-inner">
+    <div class="info-left rv">
+      <p class="info-label">Visit Us</p>
+      <h2 class="info-title">모카를 찾아오세요</h2>
+      <p class="info-desc">연남동 골목 안, 원두 향이 흐르는 작은 공간입니다. 커피 한 잔의 여유와 함께 좋은 하루를 시작하세요.</p>
+    </div>
+    <div class="info-right rv">
+      <div class="info-row">
+        <svg class="info-row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div class="info-row-text"><strong>주소</strong>서울시 마포구 연남동 00-00</div>
+      </div>
+      <div class="info-row">
+        <svg class="info-row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <div class="info-row-text"><strong>영업시간</strong>월-금 08:00 - 21:00<br>토-일 09:00 - 22:00</div>
+      </div>
+      <div class="info-row">
+        <svg class="info-row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        <div class="info-row-text"><strong>전화</strong><a href="tel:02-000-0000">02-000-0000</a></div>
+      </div>
+      <div class="info-row">
+        <svg class="info-row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5"/></svg>
+        <div class="info-row-text"><strong>인스타그램</strong><a href="https://instagram.com/mocha.official" target="_blank" rel="noopener noreferrer">@mocha.official</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <span>&copy; 2025 모카. All rights reserved.</span>
+  <a href="https://dongboweb.vercel.app" target="_blank" rel="noopener noreferrer">Made by 동보웹</a>
+</footer>
+
+<!-- Lightbox -->
+<div class="lb-overlay" id="lb">
+  <button class="lb-close" id="lbClose" data-cursor="nav">&times;</button>
+  <button class="lb-nav lb-prev" id="lbPrev" data-cursor="nav">&#8592;</button>
+  <button class="lb-nav lb-next" id="lbNext" data-cursor="nav">&#8594;</button>
+  <div class="lb-inner" id="lbInner"></div>
+  <div class="lb-meta"><span id="lbCount"></span><span class="lb-cap" id="lbCap"></span></div>
+</div>
+
+<!-- Floating Buttons -->
+<a href="#top" class="float-top" id="floatTop" data-cursor="nav"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></a>
+<a href="https://pf.kakao.com/" target="_blank" rel="noopener noreferrer" class="kakao-float" data-cursor="nav"><svg viewBox="0 0 24 24" fill="#3C1E1E"><path d="M12 3C6.48 3 2 6.58 2 10.9c0 2.78 1.86 5.22 4.65 6.6-.15.53-.96 3.41-1 3.56 0 .08.03.16.09.21.07.04.16.05.23.01.31-.04 3.6-2.36 4.15-2.74.6.09 1.22.13 1.88.13 5.52 0 10-3.58 10-7.97C22 6.58 17.52 3 12 3z"/></svg></a>
+
+<script>
+/* ===== TYPEWRITER ===== */
+var twLines = ['오늘도, 좋은 커피 한 잔.'];
+var twEl = document.getElementById('heroTitle');
+var twCharIdx = 0, twLineIdx = 0;
+function typewrite() {
+  if (twLineIdx >= twLines.length) return;
+  var line = twLines[twLineIdx];
+  if (twCharIdx === 0) {
+    var span = document.createElement('span');
+    span.className = 'tw-line';
+    twEl.appendChild(span);
+  }
+  var curSpan = twEl.querySelectorAll('.tw-line')[twLineIdx];
+  if (twCharIdx < line.length) {
+    curSpan.textContent = line.substring(0, twCharIdx + 1);
+    twCharIdx++;
+    setTimeout(typewrite, 60 + Math.random() * 40);
+  } else {
+    twCharIdx = 0;
+    twLineIdx++;
+    if (twLineIdx < twLines.length) setTimeout(typewrite, 300);
+  }
+}
+setTimeout(typewrite, 800);
+
+/* ===== CURSOR ===== */
+var cur = document.querySelector('.cur');
+var ring = document.querySelector('.cur-ring');
+var ctxt = document.querySelector('.cur-text');
+var isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+if (isTouch) {
+  cur.style.display = 'none'; ring.style.display = 'none'; ctxt.style.display = 'none';
+  document.documentElement.style.cursor = 'auto';
+  document.body.style.cursor = 'auto';
+} else {
+  var mx = 0, my = 0, cx = 0, cy = 0;
+  document.addEventListener('mousemove', function(e) {
+    mx = e.clientX; my = e.clientY;
+    cur.style.left = (mx - 4) + 'px'; cur.style.top = (my - 4) + 'px';
+    ctxt.style.left = (mx + 24) + 'px'; ctxt.style.top = (my - 8) + 'px';
+  }, {passive: true});
+  function animRing() {
+    cx += (mx - cx) * 0.15; cy += (my - cy) * 0.15;
+    ring.style.left = (cx - ring.offsetWidth / 2) + 'px';
+    ring.style.top = (cy - ring.offsetHeight / 2) + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+  document.querySelectorAll('[data-cursor]').forEach(function(el) {
+    el.addEventListener('mouseenter', function() {
+      var t = el.getAttribute('data-cursor');
+      if (t === 'nav') ring.classList.add('nav-hover');
+      else ring.classList.add('hover');
+      if (t && t !== 'nav') { ctxt.textContent = t; ctxt.classList.add('show'); }
+    });
+    el.addEventListener('mouseleave', function() {
+      ring.classList.remove('hover', 'nav-hover');
+      ctxt.classList.remove('show');
+    });
+  });
+}
+
+/* ===== SCROLL REVEAL ===== */
+var rvObs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) { entry.target.classList.add('show'); rvObs.unobserve(entry.target); }
+  });
+}, {threshold: 0.15, rootMargin: '0px 0px -40px 0px'});
+document.querySelectorAll('.rv').forEach(function(el) { rvObs.observe(el); });
+
+/* ===== HAMBURGER ===== */
+var hbg = document.querySelector('.hbg');
+var mobOv = document.querySelector('.mob-overlay');
+hbg.addEventListener('click', function() {
+  mobOv.classList.toggle('open');
+  document.body.style.overflow = mobOv.classList.contains('open') ? 'hidden' : '';
+});
+mobOv.querySelectorAll('a').forEach(function(a) {
+  a.addEventListener('click', function() { mobOv.classList.remove('open'); document.body.style.overflow = ''; });
+});
+
+/* ===== FLOAT TOP ===== */
+var floatTop = document.getElementById('floatTop');
+window.addEventListener('scroll', function() {
+  if (window.scrollY > 300) floatTop.classList.add('show');
+  else floatTop.classList.remove('show');
+}, {passive: true});
+
+/* ===== LIGHTBOX ===== */
+var lb = document.getElementById('lb');
+var lbInner = document.getElementById('lbInner');
+var lbCount = document.getElementById('lbCount');
+var lbCap = document.getElementById('lbCap');
+var lbItems = [];
+var lbIdx = 0;
+var phSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>';
+var bgMap = {
+  'mc-bg-1': 'linear-gradient(135deg, #D4A574, #8B6914)',
+  'mc-bg-2': 'linear-gradient(135deg, #A0845C, #5C4A2E)',
+  'mc-bg-3': 'linear-gradient(135deg, #C8A882, #7A5C34)',
+  'mc-bg-4': 'linear-gradient(135deg, #B8956A, #6B4D2A)',
+  'mc-bg-5': 'linear-gradient(135deg, #DEB887, #8B6E4E)',
+  'mc-bg-6': 'linear-gradient(135deg, #C4956A, #6D5238)',
+  'mc-pb-1': 'linear-gradient(135deg, #BFA07A, #7A5C34)',
+  'mc-pb-2': 'linear-gradient(135deg, #A89070, #5E4830)',
+  'mc-pb-3': 'linear-gradient(135deg, #C4A882, #8B6E4E)',
+  'mc-pb-4': 'linear-gradient(135deg, #D4B896, #8B7050)'
+};
+
+document.querySelectorAll('.bento-item').forEach(function(item, i) {
+  var bg = item.querySelector('.bg');
+  var cls = [].slice.call(bg.classList).filter(function(c) { return c.startsWith('mc-bg-'); })[0] || '';
+  var cap = item.querySelector('.bento-cap');
+  lbItems.push({bg: cls, title: cap ? cap.querySelector('h3').textContent : '', desc: cap ? cap.querySelector('p').textContent : ''});
+  item.addEventListener('click', function() { openLb(i); });
+});
+var scLen = lbItems.length;
+var pbCells = document.querySelectorAll('.pband-cell');
+var pbOrigCount = pbCells.length / 2;
+for (var pi = 0; pi < pbOrigCount; pi++) {
+  var cell = pbCells[pi];
+  var inner = cell.querySelector('.bg');
+  var cls = [].slice.call(inner.classList).filter(function(c) { return c.startsWith('mc-pb-'); })[0] || '';
+  lbItems.push({bg: cls, title: '', desc: ''});
+  cell.addEventListener('click', (function(idx) { return function() { openLb(idx); }; })(scLen + pi));
+  pbCells[pi + pbOrigCount].addEventListener('click', (function(idx) { return function() { openLb(idx); }; })(scLen + pi));
+}
+
+function openLb(idx) { lbIdx = idx; renderLb(); lb.classList.add('open'); document.body.style.overflow = 'hidden'; document.querySelector('.kakao-float').style.display = 'none'; }
+function closeLb() { lb.classList.remove('open'); document.body.style.overflow = ''; document.querySelector('.kakao-float').style.display = ''; }
+function renderLb() {
+  var item = lbItems[lbIdx]; if (!item) return;
+  lbInner.style.opacity = '0';
+  setTimeout(function() {
+    lbInner.style.background = bgMap[item.bg] || 'var(--charcoal)';
+    lbInner.innerHTML = '';
+    lbInner.style.opacity = '1';
+  }, 150);
+  if (item.title) { lbCap.style.display = ''; lbCap.textContent = item.title; }
+  else { lbCap.style.display = 'none'; }
+  lbCount.textContent = (lbIdx + 1) + ' / ' + lbItems.length;
+}
+document.getElementById('lbClose').addEventListener('click', closeLb);
+document.getElementById('lbPrev').addEventListener('click', function() { lbIdx = (lbIdx - 1 + lbItems.length) % lbItems.length; renderLb(); });
+document.getElementById('lbNext').addEventListener('click', function() { lbIdx = (lbIdx + 1) % lbItems.length; renderLb(); });
+lb.addEventListener('click', function(e) { if (e.target === lb) closeLb(); });
+document.addEventListener('keydown', function(e) {
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLb();
+  if (e.key === 'ArrowLeft') { lbIdx = (lbIdx - 1 + lbItems.length) % lbItems.length; renderLb(); }
+  if (e.key === 'ArrowRight') { lbIdx = (lbIdx + 1) % lbItems.length; renderLb(); }
+});
+var tx = 0;
+lb.addEventListener('touchstart', function(e) { tx = e.touches[0].clientX; }, {passive: true});
+lb.addEventListener('touchend', function(e) {
+  var dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 50) {
+    if (dx < 0) lbIdx = (lbIdx + 1) % lbItems.length;
+    else lbIdx = (lbIdx - 1 + lbItems.length) % lbItems.length;
+    renderLb();
+  }
+});
+
+/* ===== IMAGE PROTECTION ===== */
+document.addEventListener('contextmenu', function(e) {
+  if (e.target.closest('.bento-item,.pband-cell,.lb-overlay,img')) e.preventDefault();
+});
+document.addEventListener('dragstart', function(e) {
+  if (e.target.tagName === 'IMG' || e.target.closest('.bento-item,.pband-cell,.lb-overlay')) e.preventDefault();
+});
+
+/* ===== PORTFOLIO PREVIEW AUTO-SCROLL ===== */
+var _isPreview = false; try { _isPreview = window.self !== window.top; } catch(e) { _isPreview = true; }
+if (_isPreview) {
+  var _asY = 0, _asSpd = 2.25, _asPaused = false;
+  function _asRun() {
+    if (!_asPaused) {
+      _asY += _asSpd;
+      var maxY = document.documentElement.scrollHeight - window.innerHeight;
+      if (_asY >= maxY) { _asPaused = true; setTimeout(function() { _asY = 0; window.scrollTo(0, 0); _asPaused = false; }, 800); }
+      else { window.scrollTo(0, _asY); }
+    }
+    requestAnimationFrame(_asRun);
+  }
+  window.addEventListener('load', function() { setTimeout(_asRun, 1200); });
+}
+</script>
+</body></html>
