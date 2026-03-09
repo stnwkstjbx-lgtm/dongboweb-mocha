@@ -7,6 +7,50 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500;700&family=Bricolage+Grotesque:wght@400;700;800&family=Noto+Sans+KR:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CafeOrCoffeeShop",
+  "name": "모카 Mocha",
+  "description": "연남동 스페셜티 커피 전문점. 매일 아침 소량 로스팅, 핸드드립과 에스프레소.",
+  "url": "https://dongboweb-mocha.vercel.app",
+  "telephone": "02-000-0000",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "연남동 00-00",
+    "addressLocality": "마포구",
+    "addressRegion": "서울특별시",
+    "postalCode": "03999",
+    "addressCountry": "KR"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 37.5665,
+    "longitude": 126.9235
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+      "opens": "08:00",
+      "closes": "21:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Saturday","Sunday"],
+      "opens": "09:00",
+      "closes": "22:00"
+    }
+  ],
+  "servesCuisine": ["Specialty Coffee","Espresso","Hand Drip","Dessert"],
+  "priceRange": "$$",
+  "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80",
+  "sameAs": ["https://instagram.com/mocha.official"]
+}
+</script>
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -24,6 +68,35 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--fg);overflow-
 ::selection{background:var(--selection-bg);color:var(--selection-fg)}
 a,button,input,select,textarea{cursor:none}
 ::-webkit-scrollbar{width:0}
+
+/* ===== PRELOADER ===== */
+.preloader{position:fixed;inset:0;z-index:99999;background:#44403C;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s var(--ease),visibility .6s}
+.preloader.hide{opacity:0;visibility:hidden;pointer-events:none}
+.pre-brand{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.pre-char{font-family:var(--font-display);font-size:clamp(2.4rem,5vw,3.6rem);font-weight:800;color:#FAFAF9;opacity:0;animation:preCharIn .6s var(--ease) forwards}
+.pre-char:nth-child(1){animation-delay:.2s}
+.pre-char:nth-child(3){animation-delay:.4s}
+.pre-steam{display:flex;gap:4px;align-items:flex-end}
+.pre-steam span{display:block;width:2px;border-radius:2px;background:var(--primary);opacity:0}
+.pre-steam span:nth-child(1){height:14px;animation:preSteam 1.2s .5s ease-in-out infinite}
+.pre-steam span:nth-child(2){height:20px;animation:preSteam 1.2s .7s ease-in-out infinite}
+.pre-steam span:nth-child(3){height:12px;animation:preSteam 1.2s .9s ease-in-out infinite}
+@keyframes preSteam{0%{opacity:0;transform:translateY(0)}30%{opacity:.7}100%{opacity:0;transform:translateY(-16px)}}
+@keyframes preCharIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.pre-line{width:80px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--primary),var(--primary-dark));transform:scaleX(0);animation:preLineIn .8s .6s var(--ease) forwards}
+@keyframes preLineIn{to{transform:scaleX(1)}}
+.pre-sub{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(250,250,249,.4);margin-top:14px;opacity:0;animation:preCharIn .5s .8s var(--ease) forwards}
+
+/* ===== SCROLL PROGRESS ===== */
+.scroll-progress{position:fixed;top:0;left:0;width:100%;height:2px;z-index:9998;background:transparent}
+.scroll-progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--primary-dark));transition:width .1s linear}
+
+/* ===== TOAST ===== */
+.toast-container{position:fixed;top:24px;right:24px;z-index:9000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{padding:12px 24px;border-radius:999px;background:rgba(250,250,249,.92);backdrop-filter:blur(16px);border:1px solid var(--border);box-shadow:0 8px 32px rgba(28,25,23,.1);font-size:.8rem;color:var(--fg);opacity:0;transform:translateX(20px);animation:toastIn .4s var(--ease) forwards;pointer-events:auto}
+.toast.out{animation:toastOut .3s var(--ease) forwards}
+@keyframes toastIn{to{opacity:1;transform:none}}
+@keyframes toastOut{to{opacity:0;transform:translateX(20px)}}
 
 /* ===== CURSOR ===== */
 .cur{position:fixed;width:8px;height:8px;border-radius:50%;background:var(--fg);pointer-events:none;z-index:10000;mix-blend-mode:difference;transition:transform .1s}
@@ -53,6 +126,9 @@ a,button,input,select,textarea{cursor:none}
 .mob-overlay.open a:nth-child(3){transition-delay:.15s}
 .mob-overlay.open a:nth-child(4){transition-delay:.2s}
 .mob-overlay.open a:nth-child(5){transition-delay:.25s}
+.mob-overlay.open a:nth-child(6){transition-delay:.3s}
+.mob-overlay.open a:nth-child(7){transition-delay:.35s}
+.mob-overlay.open a:nth-child(8){transition-delay:.4s}
 
 /* ===== HERO — ASYMMETRIC OVERLAP ===== */
 .hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;padding:0 clamp(20px,5vw,80px) clamp(60px,8vh,120px);overflow:hidden}
@@ -92,6 +168,47 @@ a,button,input,select,textarea{cursor:none}
 .about-desc{font-size:clamp(.85rem,1.1vw,.95rem);line-height:1.8;color:rgba(250,250,249,.65);max-width:640px;margin:0 auto}
 .about-quote{margin-top:40px;font-family:var(--font-display);font-size:clamp(1rem,1.8vw,1.3rem);font-weight:700;color:var(--primary);opacity:.8}
 
+/* ===== STATS BAND ===== */
+.stats-band{padding:clamp(40px,6vw,60px) clamp(20px,5vw,80px);background:var(--charcoal);border-top:1px solid rgba(250,250,249,.08)}
+.stats-inner{max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,3vw,40px);text-align:center}
+.stat-item{display:flex;flex-direction:column;align-items:center;gap:4px}
+.stat-number{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;color:var(--primary)}
+.stat-unit{font-family:var(--font-display);font-size:clamp(.9rem,1.5vw,1.2rem);font-weight:700;color:var(--primary)}
+.stat-label{font-size:.7rem;color:rgba(250,250,249,.45);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+
+/* ===== BEAN CARDS ===== */
+.beans-section{padding:clamp(80px,12vw,160px) clamp(20px,5vw,80px);background:var(--bg)}
+.beans-header{text-align:center;margin-bottom:clamp(40px,6vw,72px)}
+.beans-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--primary);margin-bottom:12px;white-space:nowrap}
+.beans-title{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700}
+.beans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1000px;margin:0 auto}
+.bean-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:clamp(24px,3vw,36px);transition:transform .4s var(--ease),box-shadow .4s var(--ease);position:relative;overflow:hidden}
+.bean-card:hover{transform:translateY(-6px);box-shadow:0 20px 48px rgba(28,25,23,.08)}
+.bean-flag{font-size:2rem;margin-bottom:12px}
+.bean-name{font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:4px}
+.bean-region{font-size:.75rem;color:var(--dim);margin-bottom:16px}
+.bean-meta{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;font-size:.78rem;color:var(--fg)}
+.bean-meta-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)}
+.bean-meta-row:last-child{border-bottom:none}
+.bean-meta-key{font-weight:500;color:var(--dim);font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+.bean-meta-val{font-weight:400}
+.bean-tags{display:flex;flex-wrap:wrap;gap:6px}
+.bean-tag{padding:4px 12px;border-radius:999px;background:rgba(217,119,6,.08);color:var(--primary);font-size:.65rem;font-weight:500;letter-spacing:.04em;white-space:nowrap}
+
+/* ===== ROASTING PROCESS ===== */
+.roast-section{padding:clamp(80px,12vw,160px) clamp(20px,5vw,80px);background:var(--charcoal);color:var(--bg)}
+.roast-header{text-align:center;margin-bottom:clamp(48px,8vw,80px)}
+.roast-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--primary);margin-bottom:12px;white-space:nowrap}
+.roast-title{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700}
+.roast-steps{display:flex;justify-content:center;gap:0;max-width:960px;margin:0 auto;position:relative}
+.roast-step{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;padding:0 16px}
+.roast-num{width:48px;height:48px;border-radius:50%;background:var(--primary);color:#fff;font-family:var(--font-display);font-size:1.1rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:20px;position:relative;z-index:2}
+.roast-step:not(:last-child)::after{content:'';position:absolute;top:24px;left:calc(50% + 24px);right:calc(-50% + 24px);height:2px;background:rgba(217,119,6,.3);z-index:1}
+.roast-icon{margin-bottom:12px}
+.roast-icon svg{width:32px;height:32px;stroke:var(--primary);fill:none;stroke-width:1.5}
+.roast-step-title{font-family:var(--font-display);font-size:.95rem;font-weight:700;margin-bottom:8px}
+.roast-step-desc{font-size:.75rem;color:rgba(250,250,249,.5);line-height:1.6;max-width:180px}
+
 /* ===== SHOWCASE — BENTO GRID ===== */
 .showcase{padding:clamp(80px,12vw,160px) clamp(20px,5vw,80px);background:var(--bg)}
 .showcase-header{text-align:center;margin-bottom:clamp(40px,6vw,72px)}
@@ -119,12 +236,18 @@ a,button,input,select,textarea{cursor:none}
 .mc-bg-5{background:url('https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800&q=80') center/cover no-repeat}
 .mc-bg-6{background:url('https://images.unsplash.com/photo-1442975631115-c4f7b05b8a2c?w=800&q=80') center/cover no-repeat}
 
-/* ===== MENU — LIGHT BAND ===== */
+/* ===== MENU — TABBED ===== */
 .menu{padding:clamp(80px,12vw,160px) clamp(20px,5vw,80px);background:var(--bg)}
 .menu-inner{max-width:960px;margin:0 auto}
 .menu-header{text-align:center;margin-bottom:clamp(40px,6vw,64px)}
 .menu-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--primary);margin-bottom:12px;white-space:nowrap}
 .menu-title{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700}
+.menu-tabs{display:flex;justify-content:center;gap:8px;margin-bottom:clamp(32px,5vw,48px)}
+.menu-tab{padding:10px 24px;border-radius:999px;border:1px solid var(--border);background:var(--card);color:var(--dim);font-size:.75rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;transition:all .3s var(--ease);white-space:nowrap}
+.menu-tab:hover{color:var(--fg);border-color:var(--dim)}
+.menu-tab.active{background:var(--charcoal);color:var(--bg);border-color:var(--charcoal)}
+.menu-panel{display:none}
+.menu-panel.active{display:block}
 .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,4vw,56px)}
 .menu-cat h3{font-family:var(--font-display);font-size:1.15rem;font-weight:700;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
 .menu-row{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--border);transition:padding-left .3s var(--ease)}
@@ -133,6 +256,29 @@ a,button,input,select,textarea{cursor:none}
 .menu-name{font-size:.85rem;font-weight:400}
 .menu-name span{display:block;font-size:.7rem;color:var(--dim);font-weight:300;margin-top:2px}
 .menu-price{font-family:var(--font-mono);font-size:.8rem;color:var(--primary);white-space:nowrap}
+
+/* ===== SUBSCRIPTION ===== */
+.sub-section{padding:clamp(80px,12vw,160px) clamp(20px,5vw,80px);background:var(--bg)}
+.sub-header{text-align:center;margin-bottom:clamp(40px,6vw,72px)}
+.sub-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--primary);margin-bottom:12px;white-space:nowrap}
+.sub-title{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700}
+.sub-desc{font-size:clamp(.85rem,1.1vw,.95rem);color:var(--dim);line-height:1.7;max-width:520px;margin:12px auto 0}
+.sub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:960px;margin:0 auto}
+.sub-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:clamp(28px,3vw,40px);text-align:center;transition:transform .4s var(--ease),box-shadow .4s var(--ease);position:relative}
+.sub-card:hover{transform:translateY(-6px);box-shadow:0 20px 48px rgba(28,25,23,.08)}
+.sub-card.featured{border-color:var(--primary);box-shadow:0 0 0 1px var(--primary)}
+.sub-card-label{font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;white-space:nowrap}
+.sub-card-name{font-family:var(--font-display);font-size:1.2rem;font-weight:700;margin-bottom:4px}
+.sub-card-amount{font-size:.8rem;color:var(--dim);margin-bottom:20px}
+.sub-card-price{font-family:var(--font-display);font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:800;color:var(--primary);margin-bottom:4px}
+.sub-card-freq{font-size:.7rem;color:var(--dim);margin-bottom:24px}
+.sub-card-features{list-style:none;text-align:left;margin-bottom:28px;display:flex;flex-direction:column;gap:10px}
+.sub-card-features li{font-size:.8rem;color:var(--fg);padding-left:20px;position:relative;line-height:1.5}
+.sub-card-features li::before{content:'';position:absolute;left:0;top:6px;width:10px;height:10px;border-radius:50%;background:rgba(217,119,6,.15);border:1.5px solid var(--primary)}
+.sub-card-cta{display:inline-block;padding:12px 28px;border-radius:999px;background:var(--charcoal);color:var(--bg);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:background .3s var(--ease);border:none;font-family:var(--font-body);white-space:nowrap}
+.sub-card-cta:hover{background:var(--primary)}
+.sub-card.featured .sub-card-cta{background:var(--primary)}
+.sub-card.featured .sub-card-cta:hover{background:var(--primary-dark)}
 
 /* ===== PHOTO BAND — DARK IMMERSIVE ===== */
 .pband{padding:clamp(60px,8vw,100px) 0;background:var(--charcoal);overflow:hidden}
@@ -145,6 +291,194 @@ a,button,input,select,textarea{cursor:none}
 .mc-pb-3{background:url('https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=800&q=80') center/cover no-repeat}
 .mc-pb-4{background:url('https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=800&q=80') center/cover no-repeat}
 @keyframes pscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ===== REVIEWS ===== */
+.reviews-section{
+  padding:clamp(80px,12vw,160px) clamp(20px,5vw,80px);
+  background:var(--charcoal);
+  color:var(--bg);
+}
+.reviews-header{
+  text-align:center;
+  margin-bottom:clamp(40px,6vw,72px);
+}
+.reviews-label{
+  font-size:.6rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--primary);
+  margin-bottom:12px;
+  white-space:nowrap;
+}
+.reviews-title{
+  font-family:var(--font-display);
+  font-size:clamp(1.6rem,3vw,2.4rem);
+  font-weight:700;
+}
+.reviews-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+  max-width:1000px;
+  margin:0 auto;
+}
+.review-card{
+  background:rgba(250,250,249,.06);
+  border:1px solid rgba(250,250,249,.08);
+  border-radius:12px;
+  padding:clamp(24px,3vw,32px);
+  transition:transform .4s var(--ease),border-color .4s var(--ease);
+}
+.review-card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(217,119,6,.3);
+}
+.review-stars{
+  display:flex;
+  gap:2px;
+  margin-bottom:16px;
+}
+.review-stars svg{
+  width:14px;
+  height:14px;
+  fill:var(--primary);
+}
+.review-text{
+  font-size:.85rem;
+  line-height:1.7;
+  color:rgba(250,250,249,.65);
+  margin-bottom:20px;
+  font-style:italic;
+}
+.review-author{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.review-avatar{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:rgba(217,119,6,.15);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:.8rem;
+  color:var(--primary);
+  flex-shrink:0;
+}
+.review-name{
+  font-weight:500;
+  font-size:.8rem;
+  color:var(--bg);
+}
+.review-date{
+  font-size:.7rem;
+  color:rgba(250,250,249,.35);
+  margin-top:2px;
+}
+
+/* ===== BARISTA ===== */
+.barista-section{
+  padding:clamp(80px,12vw,160px) clamp(20px,5vw,80px);
+  background:var(--bg);
+}
+.barista-header{
+  text-align:center;
+  margin-bottom:clamp(40px,6vw,72px);
+}
+.barista-label{
+  font-size:.6rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--primary);
+  margin-bottom:12px;
+  white-space:nowrap;
+}
+.barista-title{
+  font-family:var(--font-display);
+  font-size:clamp(1.6rem,3vw,2.4rem);
+  font-weight:700;
+}
+.barista-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+  max-width:1000px;
+  margin:0 auto;
+}
+.barista-card{
+  text-align:center;
+  padding:clamp(24px,3vw,36px) clamp(16px,2vw,24px);
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  transition:transform .4s var(--ease),box-shadow .4s var(--ease);
+}
+.barista-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 20px 48px rgba(28,25,23,.08);
+}
+.barista-avatar{
+  width:72px;
+  height:72px;
+  border-radius:50%;
+  background:linear-gradient(135deg,rgba(217,119,6,.12),rgba(217,119,6,.04));
+  margin:0 auto 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.6rem;
+}
+.barista-name{
+  font-family:var(--font-display);
+  font-size:1rem;
+  font-weight:700;
+  margin-bottom:4px;
+}
+.barista-role{
+  font-size:.7rem;
+  color:var(--dim);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  margin-bottom:12px;
+  white-space:nowrap;
+}
+.barista-desc{
+  font-size:.8rem;
+  color:var(--dim);
+  line-height:1.6;
+}
+.barista-cert{
+  display:inline-block;
+  margin-top:12px;
+  padding:4px 12px;
+  border-radius:999px;
+  background:rgba(217,119,6,.08);
+  color:var(--primary);
+  font-size:.65rem;
+  font-weight:500;
+  letter-spacing:.04em;
+  white-space:nowrap;
+}
+
+/* ===== FAQ ===== */
+.faq-section{padding:clamp(80px,12vw,160px) clamp(20px,5vw,80px);background:var(--bg)}
+.faq-header{text-align:center;margin-bottom:clamp(40px,6vw,72px)}
+.faq-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--primary);margin-bottom:12px;white-space:nowrap}
+.faq-title{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700}
+.faq-list{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
+.faq-item{border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .3s var(--ease)}
+.faq-item.open{border-color:var(--primary)}
+.faq-q{width:100%;padding:20px 24px;background:var(--card);border:none;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:16px;font-family:var(--font-body);font-size:.9rem;font-weight:500;color:var(--fg);transition:color .3s}
+.faq-q:hover{color:var(--primary)}
+.faq-q-icon{width:20px;height:20px;flex-shrink:0;transition:transform .3s var(--ease);color:var(--dim)}
+.faq-item.open .faq-q-icon{transform:rotate(45deg);color:var(--primary)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease),padding .4s var(--ease)}
+.faq-a-inner{padding:0 24px 20px;font-size:.85rem;color:var(--dim);line-height:1.7}
+.faq-item.open .faq-a{max-height:200px}
 
 /* ===== INFO ===== */
 .info{padding:clamp(80px,12vw,160px) clamp(20px,5vw,80px);background:var(--bg)}
@@ -161,9 +495,21 @@ a,button,input,select,textarea{cursor:none}
 .info-row-text a:hover{background-size:100% 1px}
 
 /* ===== FOOTER ===== */
-.footer{padding:40px clamp(20px,5vw,80px);background:var(--charcoal);color:rgba(250,250,249,.4);display:flex;justify-content:space-between;align-items:center;font-size:.7rem}
-.footer a{color:rgba(250,250,249,.4);text-decoration:none;transition:color .3s}
-.footer a:hover{color:var(--primary)}
+.footer-main{padding:clamp(60px,8vw,80px) clamp(20px,5vw,80px) 0;background:var(--charcoal);color:rgba(250,250,249,.65)}
+.footer-grid{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:clamp(24px,4vw,48px)}
+.footer-col-brand{font-family:var(--font-display);font-size:1.3rem;font-weight:800;color:var(--bg);margin-bottom:12px}
+.footer-col p{font-size:.8rem;line-height:1.7;color:rgba(250,250,249,.45)}
+.footer-col h4{font-family:var(--font-display);font-size:.8rem;font-weight:700;color:var(--bg);margin-bottom:16px;letter-spacing:.06em}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-col ul li a{font-size:.8rem;color:rgba(250,250,249,.45);text-decoration:none;transition:color .3s}
+.footer-col ul li a:hover{color:var(--primary)}
+.footer-col .footer-social{display:flex;gap:12px;margin-top:16px}
+.footer-col .footer-social a{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1px solid rgba(250,250,249,.12);color:rgba(250,250,249,.45);text-decoration:none;transition:all .3s var(--ease)}
+.footer-col .footer-social a:hover{border-color:var(--primary);color:var(--primary)}
+.footer-col .footer-hours{font-size:.8rem;color:rgba(250,250,249,.45);line-height:1.8}
+.footer-bottom{max-width:1000px;margin:clamp(32px,4vw,48px) auto 0;padding:20px 0;border-top:1px solid rgba(250,250,249,.08);display:flex;justify-content:space-between;align-items:center;font-size:.7rem;color:rgba(250,250,249,.35)}
+.footer-bottom a{color:rgba(250,250,249,.35);text-decoration:none;transition:color .3s}
+.footer-bottom a:hover{color:var(--primary)}
 
 /* ===== LIGHTBOX ===== */
 .lb-overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(28,25,23,.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;flex-direction:column}
@@ -190,6 +536,44 @@ a,button,input,select,textarea{cursor:none}
 .rv{opacity:0;transform:translateY(30px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
 .rv.show{opacity:1;transform:none}
 
+/* ===== SECTION DIVIDER ===== */
+.section-divider{
+  width:60px;
+  height:2px;
+  background:linear-gradient(90deg,var(--primary),var(--primary-dark));
+  border-radius:2px;
+  margin:0 auto 24px;
+}
+
+/* ===== FOCUS STATES (a11y) ===== */
+.fnav-link:focus-visible,
+.fnav-cta:focus-visible,
+.menu-tab:focus-visible,
+.faq-q:focus-visible,
+.sub-card-cta:focus-visible,
+.hero-cta:focus-visible,
+.lb-close:focus-visible,
+.lb-nav:focus-visible,
+.float-top:focus-visible{
+  outline:2px solid var(--primary);
+  outline-offset:3px;
+}
+
+/* ===== PREFERS REDUCED MOTION ===== */
+@media(prefers-reduced-motion:reduce){
+  .hero-bg{animation:none}
+  .hero-glow{animation:none}
+  .hero-steam span,.pre-steam span{animation:none}
+  .pband-track{animation:none}
+  .rv{opacity:1;transform:none;transition:none}
+  .preloader{display:none}
+  html{scroll-behavior:auto}
+  .bean-card,.sub-card,.review-card,.barista-card{transition:none}
+  .bento-item,.pband-cell{transition:none}
+  .bento-item .bg,.pband-cell .bg{transition:none}
+  .counter{animation:none}
+}
+
 /* ===== TABLET ===== */
 @media(max-width:1024px)and(min-width:769px){
   .bento{grid-template-columns:repeat(2,1fr);grid-template-rows:auto}
@@ -197,6 +581,19 @@ a,button,input,select,textarea{cursor:none}
   .b2,.b3,.b4,.b6{grid-column:span 1}
   .menu-grid{gap:32px}
   .hero-offset{width:240px;right:40px}
+  .beans-grid{grid-template-columns:repeat(2,1fr)}
+  .beans-grid .bean-card:nth-child(3){grid-column:1/3;max-width:50%;margin:0 auto}
+  .roast-steps{flex-wrap:wrap;gap:32px}
+  .roast-step{flex:0 0 calc(50% - 16px)}
+  .roast-step:not(:last-child)::after{display:none}
+  .sub-grid{grid-template-columns:repeat(2,1fr)}
+  .sub-grid .sub-card:nth-child(3){grid-column:1/3;max-width:50%;margin:0 auto}
+  .footer-grid{grid-template-columns:repeat(2,1fr)}
+  .stats-inner{grid-template-columns:repeat(2,1fr);gap:24px}
+  .reviews-grid{grid-template-columns:repeat(2,1fr)}
+  .reviews-grid .review-card:nth-child(3){grid-column:1/3;max-width:50%;margin:0 auto}
+  .barista-grid{grid-template-columns:repeat(2,1fr)}
+  .barista-grid .barista-card:nth-child(3){grid-column:1/3;max-width:50%;margin:0 auto}
 }
 
 /* ===== MOBILE ===== */
@@ -213,21 +610,55 @@ a,button,input,select,textarea{cursor:none}
   .b1,.b2,.b3,.b4,.b5,.b6{grid-column:1;min-height:220px}
   .b1,.b5{min-height:260px}
   .menu-grid{grid-template-columns:1fr;gap:40px}
+  .menu-tabs{flex-wrap:wrap}
   .info-inner{grid-template-columns:1fr;gap:40px}
   .pband-cell{flex:0 0 220px;height:160px}
   .lb-inner{width:92vw}
   .lb-prev{left:8px}.lb-next{right:8px}
-  .footer{flex-direction:column;gap:12px;text-align:center}
   .kakao-float{bottom:16px;right:16px;width:46px;height:46px}
   .float-top{bottom:72px;right:16px;width:38px;height:38px}
+  .beans-grid{grid-template-columns:1fr}
+  .beans-grid .bean-card:nth-child(3){max-width:100%}
+  .roast-steps{flex-direction:column;gap:32px}
+  .roast-step:not(:last-child)::after{display:none}
+  .sub-grid{grid-template-columns:1fr}
+  .sub-grid .sub-card:nth-child(3){max-width:100%}
+  .stats-inner{grid-template-columns:repeat(2,1fr);gap:20px}
+  .footer-grid{grid-template-columns:1fr;gap:32px}
+  .footer-bottom{flex-direction:column;gap:8px;text-align:center}
+  .reviews-grid{grid-template-columns:1fr}
+  .reviews-grid .review-card:nth-child(3){max-width:100%}
+  .barista-grid{grid-template-columns:1fr}
+  .barista-grid .barista-card:nth-child(3){max-width:100%}
 }
 @media(max-width:480px){
   .hero-title{font-size:1.6rem}
   .bento-item{min-height:180px}
+  .stats-inner{grid-template-columns:1fr 1fr;gap:16px}
+  .menu-tab{padding:8px 16px;font-size:.65rem}
+  .faq-q{padding:16px 20px;font-size:.82rem}
 }
 </style>
 </head>
 <body id="top">
+
+<!-- Preloader -->
+<div class="preloader" id="preloader">
+  <div class="pre-brand">
+    <span class="pre-char">모</span>
+    <div class="pre-steam"><span></span><span></span><span></span></div>
+    <span class="pre-char">카</span>
+  </div>
+  <div class="pre-line"></div>
+  <p class="pre-sub">Specialty Coffee · Yeonnam</p>
+</div>
+
+<!-- Scroll Progress -->
+<div class="scroll-progress"><div class="scroll-progress-bar" id="scrollBar"></div></div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
 <!-- Cursor -->
 <div class="cur"></div><div class="cur-ring"></div><div class="cur-text"></div>
 
@@ -237,8 +668,10 @@ a,button,input,select,textarea{cursor:none}
   <div class="fnav-sep"></div>
   <div class="fnav-links">
     <a href="#about" class="fnav-link" data-cursor="nav">About</a>
+    <a href="#beans" class="fnav-link" data-cursor="nav">Beans</a>
     <a href="#showcase" class="fnav-link" data-cursor="nav">Space</a>
     <a href="#menu" class="fnav-link" data-cursor="nav">Menu</a>
+    <a href="#faq" class="fnav-link" data-cursor="nav">FAQ</a>
     <a href="#info" class="fnav-link" data-cursor="nav">Info</a>
   </div>
   <a href="https://pf.kakao.com/_zAqqX" target="_blank" rel="noopener noreferrer" class="fnav-cta" data-cursor="nav">상담하기</a>
@@ -248,8 +681,10 @@ a,button,input,select,textarea{cursor:none}
 <!-- Mobile Overlay -->
 <div class="mob-overlay">
   <a href="#about">About</a>
+  <a href="#beans">Beans</a>
   <a href="#showcase">Space</a>
   <a href="#menu">Menu</a>
+  <a href="#faq">FAQ</a>
   <a href="#info">Info</a>
   <a href="https://pf.kakao.com/_zAqqX" target="_blank" rel="noopener noreferrer">상담하기</a>
 </div>
@@ -277,6 +712,119 @@ a,button,input,select,textarea{cursor:none}
     <h2 class="about-title">좋은 커피는<br>좋은 원두에서 시작됩니다</h2>
     <p class="about-desc">모카는 2018년, 커피 한 잔이 가진 힘을 믿는 두 사람이 시작했습니다. 산지에서 직접 선별한 스페셜티 원두를 매일 아침 소량 로스팅하고, 한 잔 한 잔 정성스럽게 추출합니다. 공간 곳곳에 스며든 원목의 따뜻함과 은은한 원두 향이 일상에 여유를 더합니다.</p>
     <p class="about-quote">"커피는 단순한 음료가 아니라, 하루를 여는 의식입니다."</p>
+  </div>
+</section>
+
+<!-- ===== STATS BAND ===== -->
+<section class="stats-band">
+  <div class="stats-inner rv">
+    <div class="stat-item">
+      <div><span class="stat-number counter" data-target="2018">0</span></div>
+      <span class="stat-label">Since</span>
+    </div>
+    <div class="stat-item">
+      <div><span class="stat-number counter" data-target="12" data-suffix="+">0</span></div>
+      <span class="stat-label">Origins</span>
+    </div>
+    <div class="stat-item">
+      <div><span class="stat-number counter" data-target="4500" data-suffix="+">0</span></div>
+      <span class="stat-label">Cups Daily</span>
+    </div>
+    <div class="stat-item">
+      <div><span class="stat-number counter" data-target="100" data-suffix="%">0</span></div>
+      <span class="stat-label">Specialty Grade</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BEAN CARDS ===== -->
+<section class="beans-section" id="beans">
+  <div class="beans-header rv">
+    <p class="beans-label">Our Beans</p>
+    <h2 class="beans-title">산지별 원두</h2>
+  </div>
+  <div class="beans-grid">
+    <div class="bean-card rv">
+      <div class="bean-flag">&#x1F1EA;&#x1F1F9;</div>
+      <div class="bean-name">Ethiopia Yirgacheffe</div>
+      <div class="bean-region">이르가체프 · 코체레</div>
+      <div class="bean-meta">
+        <div class="bean-meta-row"><span class="bean-meta-key">Altitude</span><span class="bean-meta-val">1,800 - 2,200m</span></div>
+        <div class="bean-meta-row"><span class="bean-meta-key">Process</span><span class="bean-meta-val">Washed</span></div>
+        <div class="bean-meta-row"><span class="bean-meta-key">Acidity</span><span class="bean-meta-val">Bright</span></div>
+      </div>
+      <div class="bean-tags">
+        <span class="bean-tag">Fruity</span>
+        <span class="bean-tag">Floral</span>
+        <span class="bean-tag">Citrus</span>
+        <span class="bean-tag">Bright</span>
+      </div>
+    </div>
+    <div class="bean-card rv">
+      <div class="bean-flag">&#x1F1E8;&#x1F1F4;</div>
+      <div class="bean-name">Colombia Huila</div>
+      <div class="bean-region">우일라 · 산 아구스틴</div>
+      <div class="bean-meta">
+        <div class="bean-meta-row"><span class="bean-meta-key">Altitude</span><span class="bean-meta-val">1,600 - 1,900m</span></div>
+        <div class="bean-meta-row"><span class="bean-meta-key">Process</span><span class="bean-meta-val">Natural</span></div>
+        <div class="bean-meta-row"><span class="bean-meta-key">Body</span><span class="bean-meta-val">Medium</span></div>
+      </div>
+      <div class="bean-tags">
+        <span class="bean-tag">Chocolate</span>
+        <span class="bean-tag">Nutty</span>
+        <span class="bean-tag">Caramel</span>
+      </div>
+    </div>
+    <div class="bean-card rv">
+      <div class="bean-flag">&#x1F1EC;&#x1F1F9;</div>
+      <div class="bean-name">Guatemala Antigua</div>
+      <div class="bean-region">안티구아 · 아카테낭고</div>
+      <div class="bean-meta">
+        <div class="bean-meta-row"><span class="bean-meta-key">Altitude</span><span class="bean-meta-val">1,500 - 1,700m</span></div>
+        <div class="bean-meta-row"><span class="bean-meta-key">Process</span><span class="bean-meta-val">Honey</span></div>
+        <div class="bean-meta-row"><span class="bean-meta-key">Body</span><span class="bean-meta-val">Full</span></div>
+      </div>
+      <div class="bean-tags">
+        <span class="bean-tag">Caramel</span>
+        <span class="bean-tag">Smoky</span>
+        <span class="bean-tag">Cocoa</span>
+        <span class="bean-tag">Spice</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ROASTING PROCESS ===== -->
+<section class="roast-section">
+  <div class="roast-header rv">
+    <p class="roast-label">Process</p>
+    <h2 class="roast-title">한 잔이 완성되기까지</h2>
+  </div>
+  <div class="roast-steps">
+    <div class="roast-step rv">
+      <div class="roast-num">1</div>
+      <div class="roast-icon"><svg viewBox="0 0 32 32"><path d="M16 4C9.4 4 4 9.4 4 16s5.4 12 12 12 12-5.4 12-12S22.6 4 16 4z"/><path d="M12 16l3 3 5-6"/></svg></div>
+      <div class="roast-step-title">그린빈 선별</div>
+      <div class="roast-step-desc">산지 직수입 원두를 한 알 한 알 핸드픽으로 선별합니다</div>
+    </div>
+    <div class="roast-step rv">
+      <div class="roast-num">2</div>
+      <div class="roast-icon"><svg viewBox="0 0 32 32"><path d="M8 28V14a8 8 0 0116 0v14"/><path d="M4 28h24"/><path d="M14 8c0-2.2 1.8-4 4-4"/></svg></div>
+      <div class="roast-step-title">소량 로스팅</div>
+      <div class="roast-step-desc">매일 아침 소량만 로스팅하여 프로파일을 관리합니다</div>
+    </div>
+    <div class="roast-step rv">
+      <div class="roast-num">3</div>
+      <div class="roast-icon"><svg viewBox="0 0 32 32"><path d="M6 24h20"/><path d="M10 24V12a6 6 0 0112 0v12"/><path d="M16 4v4"/><path d="M12 6l4-2 4 2"/></svg></div>
+      <div class="roast-step-title">신선한 추출</div>
+      <div class="roast-step-desc">주문 즉시 핸드드립 또는 에스프레소로 추출합니다</div>
+    </div>
+    <div class="roast-step rv">
+      <div class="roast-num">4</div>
+      <div class="roast-icon"><svg viewBox="0 0 32 32"><path d="M8 24c0 2.2 3.6 4 8 4s8-1.8 8-4"/><path d="M8 24V12c0-2.2 3.6-4 8-4s8 1.8 8 4v12"/><path d="M24 16c2.2 0 4 1.8 4 4s-1.8 4-4 4"/></svg></div>
+      <div class="roast-step-title">한 잔의 완성</div>
+      <div class="roast-step-desc">적정 온도와 최적 밸런스로 완성된 한 잔을 드립니다</div>
+    </div>
   </div>
 </section>
 
@@ -321,23 +869,213 @@ a,button,input,select,textarea{cursor:none}
       <p class="menu-label">Menu</p>
       <h2 class="menu-title">대표 메뉴</h2>
     </div>
-    <div class="menu-grid">
-      <div class="menu-cat rv">
-        <h3>Coffee</h3>
-        <div class="menu-row"><div class="menu-name">에스프레소<span>에티오피아 예가체프 싱글오리진</span></div><div class="menu-price">4,500</div></div>
-        <div class="menu-row"><div class="menu-name">아메리카노<span>하우스 블렌드 / 싱글오리진 선택</span></div><div class="menu-price">5,000</div></div>
-        <div class="menu-row"><div class="menu-name">카페라떼<span>부드러운 우유 거품과 에스프레소</span></div><div class="menu-price">5,500</div></div>
-        <div class="menu-row"><div class="menu-name">핸드드립<span>오늘의 원두로 한 잔씩 추출</span></div><div class="menu-price">6,500</div></div>
-        <div class="menu-row"><div class="menu-name">콜드브루<span>18시간 저온 추출</span></div><div class="menu-price">6,000</div></div>
+    <div class="menu-tabs rv">
+      <button class="menu-tab active" data-tab="coffee" role="tab" aria-selected="true" tabindex="0">Coffee</button>
+      <button class="menu-tab" data-tab="noncoffee" role="tab" aria-selected="false" tabindex="0">Non-Coffee</button>
+      <button class="menu-tab" data-tab="dessert" role="tab" aria-selected="false" tabindex="0">Dessert</button>
+    </div>
+    <!-- Coffee Panel -->
+    <div class="menu-panel active" id="panel-coffee" role="tabpanel">
+      <div class="menu-grid">
+        <div class="menu-cat rv">
+          <h3>Espresso</h3>
+          <div class="menu-row"><div class="menu-name">에스프레소<span>에티오피아 예가체프 싱글오리진</span></div><div class="menu-price">4,500</div></div>
+          <div class="menu-row"><div class="menu-name">아메리카노<span>하우스 블렌드 / 싱글오리진 선택</span></div><div class="menu-price">5,000</div></div>
+          <div class="menu-row"><div class="menu-name">카페라떼<span>부드러운 우유 거품과 에스프레소</span></div><div class="menu-price">5,500</div></div>
+          <div class="menu-row"><div class="menu-name">카푸치노<span>풍성한 밀크폼의 클래식</span></div><div class="menu-price">5,500</div></div>
+          <div class="menu-row"><div class="menu-name">바닐라 라떼<span>마다가스카르 바닐라빈</span></div><div class="menu-price">6,000</div></div>
+        </div>
+        <div class="menu-cat rv">
+          <h3>Brew</h3>
+          <div class="menu-row"><div class="menu-name">핸드드립<span>싱글오리진 한 잔씩 추출</span></div><div class="menu-price">6,500</div></div>
+          <div class="menu-row"><div class="menu-name">콜드브루<span>18시간 저온 추출</span></div><div class="menu-price">6,000</div></div>
+          <div class="menu-row"><div class="menu-name">콜드브루 라떼<span>콜드브루 + 우유</span></div><div class="menu-price">6,500</div></div>
+          <div class="menu-row"><div class="menu-name">더치커피<span>점적식 저온 추출 300ml</span></div><div class="menu-price">7,000</div></div>
+          <div class="menu-row"><div class="menu-name">플랫 화이트<span>벨벳 마이크로폼 더블샷</span></div><div class="menu-price">5,500</div></div>
+        </div>
       </div>
-      <div class="menu-cat rv">
-        <h3>Non-Coffee &amp; Dessert</h3>
-        <div class="menu-row"><div class="menu-name">말차라떼<span>교토산 유기농 말차</span></div><div class="menu-price">6,000</div></div>
-        <div class="menu-row"><div class="menu-name">얼그레이 밀크티<span>트와이닝 찻잎 직접 우림</span></div><div class="menu-price">5,500</div></div>
-        <div class="menu-row"><div class="menu-name">자몽 에이드<span>생과일 착즙</span></div><div class="menu-price">5,500</div></div>
-        <div class="menu-row"><div class="menu-name">당근 케이크<span>매장 직접 제조</span></div><div class="menu-price">6,500</div></div>
-        <div class="menu-row"><div class="menu-name">까눌레<span>매일 한정 수량</span></div><div class="menu-price">4,000</div></div>
+    </div>
+    <!-- Non-Coffee Panel -->
+    <div class="menu-panel" id="panel-noncoffee" role="tabpanel">
+      <div class="menu-grid">
+        <div class="menu-cat rv">
+          <h3>Tea</h3>
+          <div class="menu-row"><div class="menu-name">얼그레이 밀크티<span>트와이닝 찻잎 직접 우림</span></div><div class="menu-price">5,500</div></div>
+          <div class="menu-row"><div class="menu-name">말차라떼<span>교토산 유기농 말차</span></div><div class="menu-price">6,000</div></div>
+          <div class="menu-row"><div class="menu-name">캐모마일 티<span>허브 블렌딩</span></div><div class="menu-price">5,000</div></div>
+          <div class="menu-row"><div class="menu-name">루이보스 라떼<span>남아공산 루이보스</span></div><div class="menu-price">5,500</div></div>
+        </div>
+        <div class="menu-cat rv">
+          <h3>Ade &amp; Smoothie</h3>
+          <div class="menu-row"><div class="menu-name">자몽 에이드<span>생과일 착즙</span></div><div class="menu-price">5,500</div></div>
+          <div class="menu-row"><div class="menu-name">레몬 에이드<span>시칠리아 레몬</span></div><div class="menu-price">5,500</div></div>
+          <div class="menu-row"><div class="menu-name">망고 스무디<span>알폰소 망고 퓌레</span></div><div class="menu-price">6,000</div></div>
+          <div class="menu-row"><div class="menu-name">초콜릿<span>발로나 다크 초콜릿</span></div><div class="menu-price">6,000</div></div>
+        </div>
       </div>
+    </div>
+    <!-- Dessert Panel -->
+    <div class="menu-panel" id="panel-dessert" role="tabpanel">
+      <div class="menu-grid">
+        <div class="menu-cat rv">
+          <h3>Bakery</h3>
+          <div class="menu-row"><div class="menu-name">당근 케이크<span>매장 직접 제조</span></div><div class="menu-price">6,500</div></div>
+          <div class="menu-row"><div class="menu-name">까눌레<span>매일 한정 수량</span></div><div class="menu-price">4,000</div></div>
+          <div class="menu-row"><div class="menu-name">크루아상<span>프랑스산 버터 36겹</span></div><div class="menu-price">4,500</div></div>
+          <div class="menu-row"><div class="menu-name">바스크 치즈케이크<span>홀/조각 선택</span></div><div class="menu-price">6,000</div></div>
+        </div>
+        <div class="menu-cat rv">
+          <h3>Special</h3>
+          <div class="menu-row"><div class="menu-name">티라미수<span>에스프레소 + 마스카포네</span></div><div class="menu-price">7,000</div></div>
+          <div class="menu-row"><div class="menu-name">아포가토<span>바닐라 젤라토 + 에스프레소</span></div><div class="menu-price">6,500</div></div>
+          <div class="menu-row"><div class="menu-name">브라우니<span>발로나 다크 70%</span></div><div class="menu-price">5,000</div></div>
+          <div class="menu-row"><div class="menu-name">스콘 세트<span>스콘 2 + 클로티드크림 + 잼</span></div><div class="menu-price">7,500</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SUBSCRIPTION ===== -->
+<section class="sub-section">
+  <div class="sub-header rv">
+    <p class="sub-label">Subscription</p>
+    <h2 class="sub-title">원두 정기 배송</h2>
+    <p class="sub-desc">매장에서 로스팅한 신선한 원두를 집에서도 즐기세요. 로스팅 후 48시간 이내 발송합니다.</p>
+  </div>
+  <div class="sub-grid">
+    <div class="sub-card rv">
+      <div class="sub-card-label">Single</div>
+      <div class="sub-card-name">원두 200g</div>
+      <div class="sub-card-amount">1인 가구</div>
+      <div class="sub-card-price">18,000</div>
+      <div class="sub-card-freq">월 1회 배송</div>
+      <ul class="sub-card-features">
+        <li>원두 200g (분쇄 선택)</li>
+        <li>산지 1종 지정 가능</li>
+        <li>무료 배송</li>
+      </ul>
+      <button class="sub-card-cta" data-toast="원두 200g 구독 상담은 카카오톡으로 문의해 주세요.">구독 신청</button>
+    </div>
+    <div class="sub-card featured rv">
+      <div class="sub-card-label">Couple</div>
+      <div class="sub-card-name">원두 400g</div>
+      <div class="sub-card-amount">2인 가구</div>
+      <div class="sub-card-price">32,000</div>
+      <div class="sub-card-freq">월 2회 배송</div>
+      <ul class="sub-card-features">
+        <li>원두 200g × 2회</li>
+        <li>산지 2종 선택 가능</li>
+        <li>드립백 5매 증정</li>
+        <li>무료 배송</li>
+      </ul>
+      <button class="sub-card-cta" data-toast="원두 400g 구독 상담은 카카오톡으로 문의해 주세요.">구독 신청</button>
+    </div>
+    <div class="sub-card rv">
+      <div class="sub-card-label">Office</div>
+      <div class="sub-card-name">원두 1kg</div>
+      <div class="sub-card-amount">사무실 · 단체</div>
+      <div class="sub-card-price">65,000</div>
+      <div class="sub-card-freq">월 2회 배송</div>
+      <ul class="sub-card-features">
+        <li>원두 500g × 2회</li>
+        <li>블렌드 커스텀 가능</li>
+        <li>드립백 10매 증정</li>
+        <li>무료 배송 + 장비 대여</li>
+      </ul>
+      <button class="sub-card-cta" data-toast="원두 1kg 구독 상담은 카카오톡으로 문의해 주세요.">구독 신청</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== REVIEWS ===== -->
+<section class="reviews-section">
+  <div class="reviews-header rv">
+    <p class="reviews-label">Reviews</p>
+    <h2 class="reviews-title">고객 후기</h2>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card rv">
+      <div class="review-stars">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+      </div>
+      <p class="review-text">"연남동에서 가장 좋아하는 카페입니다. 핸드드립 한 잔이면 하루가 행복해져요. 원두 향이 공간 가득 퍼지는 느낌이 너무 좋아요."</p>
+      <div class="review-author">
+        <div class="review-avatar">J</div>
+        <div>
+          <div class="review-name">김지은</div>
+          <div class="review-date">단골 고객</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card rv">
+      <div class="review-stars">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+      </div>
+      <p class="review-text">"콜드브루가 정말 맛있어요. 18시간 추출이라 그런지 깔끔하고 깊은 맛이 납니다. 원두 구독도 시작했는데 매번 신선해서 만족합니다."</p>
+      <div class="review-author">
+        <div class="review-avatar">S</div>
+        <div>
+          <div class="review-name">박서준</div>
+          <div class="review-date">원두 구독 고객</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card rv">
+      <div class="review-stars">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+      </div>
+      <p class="review-text">"회사 케이터링으로 부탁드렸는데 퀄리티가 정말 좋았어요. 바리스타분이 직접 와서 핸드드립 시연도 해주셨습니다. 다음에도 꼭 부탁드릴게요."</p>
+      <div class="review-author">
+        <div class="review-avatar">H</div>
+        <div>
+          <div class="review-name">이하은</div>
+          <div class="review-date">케이터링 고객</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BARISTA ===== -->
+<section class="barista-section">
+  <div class="barista-header rv">
+    <p class="barista-label">Our Baristas</p>
+    <h2 class="barista-title">모카의 바리스타</h2>
+  </div>
+  <div class="barista-grid">
+    <div class="barista-card rv">
+      <div class="barista-avatar">&#9749;</div>
+      <div class="barista-name">김도현</div>
+      <div class="barista-role">Head Barista</div>
+      <p class="barista-desc">SCA 인증 Q-Grader. 산지 직거래와 로스팅 프로파일을 총괄하며, 매일 아침 최적의 로스팅 포인트를 찾습니다.</p>
+      <span class="barista-cert">SCA Q-Grader</span>
+    </div>
+    <div class="barista-card rv">
+      <div class="barista-avatar">&#9749;</div>
+      <div class="barista-name">이수민</div>
+      <div class="barista-role">Brew Master</div>
+      <p class="barista-desc">핸드드립과 에스프레소 추출을 담당합니다. 원두마다 최적의 추출 레시피를 연구하고 적용합니다.</p>
+      <span class="barista-cert">KNBC 3위</span>
+    </div>
+    <div class="barista-card rv">
+      <div class="barista-avatar">&#9749;</div>
+      <div class="barista-name">박유진</div>
+      <div class="barista-role">Pastry Chef</div>
+      <p class="barista-desc">커피와 어울리는 디저트를 직접 만듭니다. 까눌레, 당근케이크 등 매일 한정 수량으로 제공됩니다.</p>
+      <span class="barista-cert">Le Cordon Bleu</span>
     </div>
   </div>
 </section>
@@ -354,6 +1092,58 @@ a,button,input,select,textarea{cursor:none}
     <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-2"></div></div>
     <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-3"></div></div>
     <div class="pband-cell" data-cursor="view"><div class="bg mc-pb-4"></div></div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="faq-section" id="faq">
+  <div class="faq-header rv">
+    <p class="faq-label">FAQ</p>
+    <h2 class="faq-title">자주 묻는 질문</h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item rv">
+      <button class="faq-q" role="button" aria-expanded="false" tabindex="0">
+        <span>원두 구매가 가능한가요?</span>
+        <svg class="faq-q-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">네, 매장에서 로스팅한 원두를 200g / 500g / 1kg 단위로 구매하실 수 있습니다. 분쇄 여부도 선택 가능하며, 정기 배송 구독도 운영하고 있습니다.</div></div>
+    </div>
+    <div class="faq-item rv">
+      <button class="faq-q" role="button" aria-expanded="false" tabindex="0">
+        <span>디카페인 옵션이 있나요?</span>
+        <svg class="faq-q-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">모든 에스프레소 메뉴는 디카페인 원두로 변경 가능합니다. 스위스 워터 프로세스 방식의 디카페인 원두를 사용하여 풍미 손실을 최소화합니다.</div></div>
+    </div>
+    <div class="faq-item rv">
+      <button class="faq-q" role="button" aria-expanded="false" tabindex="0">
+        <span>단체 케이터링이 가능한가요?</span>
+        <svg class="faq-q-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">기업 행사, 세미나, 팝업 등 단체 케이터링 서비스를 제공합니다. 20인 이상부터 가능하며, 카카오톡 또는 전화로 상담해 주세요.</div></div>
+    </div>
+    <div class="faq-item rv">
+      <button class="faq-q" role="button" aria-expanded="false" tabindex="0">
+        <span>반려동물 동반이 가능한가요?</span>
+        <svg class="faq-q-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">테라스 좌석은 반려동물 동반이 가능합니다. 소형견 기준이며, 리드줄 착용이 필수입니다. 실내 공간은 위생 관리를 위해 동반이 어렵습니다.</div></div>
+    </div>
+    <div class="faq-item rv">
+      <button class="faq-q" role="button" aria-expanded="false" tabindex="0">
+        <span>와이파이와 콘센트가 있나요?</span>
+        <svg class="faq-q-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">무료 와이파이를 제공하며, 2층 라운지 좌석에는 개인 콘센트가 설치되어 있습니다. 노트북 사용도 자유롭게 가능합니다.</div></div>
+    </div>
+    <div class="faq-item rv">
+      <button class="faq-q" role="button" aria-expanded="false" tabindex="0">
+        <span>주차가 가능한가요?</span>
+        <svg class="faq-q-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">매장 전용 주차장은 없으나, 도보 2분 거리에 공영주차장이 있습니다. 대중교통 이용 시 홍대입구역 3번 출구에서 도보 8분입니다.</div></div>
+    </div>
   </div>
 </section>
 
@@ -387,9 +1177,47 @@ a,button,input,select,textarea{cursor:none}
 </section>
 
 <!-- ===== FOOTER ===== -->
-<footer class="footer">
-  <span>&copy; 2025 모카. All rights reserved.</span>
-  <a href="https://dongboweb.vercel.app" target="_blank" rel="noopener noreferrer">Made by 동보웹</a>
+<footer class="footer-main">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="footer-col-brand">모카</div>
+      <p>연남동의 스페셜티 커피 전문점. 매일 아침 소량 로스팅한 신선한 원두로 한 잔 한 잔 정성스럽게 추출합니다.</p>
+      <div class="footer-social">
+        <a href="https://instagram.com/mocha.official" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#showcase">Space</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#beans">Beans</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Hours</h4>
+      <div class="footer-hours">
+        월 - 금&emsp;08:00 - 21:00<br>
+        토 - 일&emsp;09:00 - 22:00
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="tel:02-000-0000">02-000-0000</a></li>
+        <li><a href="https://instagram.com/mocha.official" target="_blank" rel="noopener noreferrer">@mocha.official</a></li>
+        <li><a href="https://pf.kakao.com/_zAqqX" target="_blank" rel="noopener noreferrer">카카오톡 상담</a></li>
+      </ul>
+      <p style="margin-top:12px">서울시 마포구 연남동 00-00</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2025 모카. All rights reserved.</span>
+    <a href="https://dongboweb.vercel.app" target="_blank" rel="noopener noreferrer">Made by 동보웹</a>
+  </div>
 </footer>
 
 <!-- Lightbox -->
@@ -406,6 +1234,26 @@ a,button,input,select,textarea{cursor:none}
 <a href="https://pf.kakao.com/_zAqqX" target="_blank" rel="noopener noreferrer" class="kakao-float" data-cursor="nav"><svg viewBox="0 0 24 24" fill="#3C1E1E"><path d="M12 3C6.48 3 2 6.58 2 10.9c0 2.78 1.86 5.22 4.65 6.6-.15.53-.96 3.41-1 3.56 0 .08.03.16.09.21.07.04.16.05.23.01.31-.04 3.6-2.36 4.15-2.74.6.09 1.22.13 1.88.13 5.52 0 10-3.58 10-7.97C22 6.58 17.52 3 12 3z"/></svg></a>
 
 <script>
+/* ===== PRELOADER ===== */
+var preloader = document.getElementById('preloader');
+window.addEventListener('load', function() {
+  setTimeout(function() { preloader.classList.add('hide'); }, 1400);
+});
+
+/* ===== SCROLL PROGRESS ===== */
+var scrollBar = document.getElementById('scrollBar');
+
+/* ===== TOAST ===== */
+var toastContainer = document.getElementById('toastContainer');
+function showToast(msg) {
+  var t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  toastContainer.appendChild(t);
+  setTimeout(function() { t.classList.add('out'); }, 2800);
+  setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 3200);
+}
+
 /* ===== CURSOR ===== */
 var cur = document.querySelector('.cur');
 var ring = document.querySelector('.cur-ring');
@@ -463,12 +1311,86 @@ mobOv.querySelectorAll('a').forEach(function(a) {
   a.addEventListener('click', function() { mobOv.classList.remove('open'); hbg.classList.remove('open'); document.body.style.overflow = ''; });
 });
 
-/* ===== FLOAT TOP ===== */
+/* ===== SCROLL HANDLER (float-top + progress bar) ===== */
 var floatTop = document.getElementById('floatTop');
 window.addEventListener('scroll', function() {
+  /* Float top button */
   if (window.scrollY > 300) floatTop.classList.add('show');
   else floatTop.classList.remove('show');
+  /* Scroll progress bar */
+  var docH = document.documentElement.scrollHeight - window.innerHeight;
+  var pct = docH > 0 ? (window.scrollY / docH) * 100 : 0;
+  scrollBar.style.width = pct + '%';
 }, {passive: true});
+
+/* ===== MENU TABS ===== */
+var menuTabs = document.querySelectorAll('.menu-tab');
+var menuPanels = document.querySelectorAll('.menu-panel');
+menuTabs.forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    var target = tab.getAttribute('data-tab');
+    menuTabs.forEach(function(t) { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+    menuPanels.forEach(function(p) { p.classList.remove('active'); });
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    var panel = document.getElementById('panel-' + target);
+    if (panel) panel.classList.add('active');
+    /* Re-observe rv elements inside newly activated panel */
+    if (panel) {
+      panel.querySelectorAll('.rv').forEach(function(el) {
+        if (!el.classList.contains('show')) rvObs.observe(el);
+      });
+    }
+  });
+});
+
+/* ===== FAQ ACCORDION ===== */
+var faqItems = document.querySelectorAll('.faq-item');
+faqItems.forEach(function(item) {
+  var btn = item.querySelector('.faq-q');
+  btn.addEventListener('click', function() {
+    var isOpen = item.classList.contains('open');
+    /* Close all */
+    faqItems.forEach(function(fi) { fi.classList.remove('open'); fi.querySelector('.faq-q').setAttribute('aria-expanded', 'false'); });
+    /* Toggle clicked */
+    if (!isOpen) {
+      item.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+
+/* ===== COUNTER ANIMATION ===== */
+var counterObs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      var el = entry.target;
+      var target = parseInt(el.getAttribute('data-target'), 10);
+      var suffix = el.getAttribute('data-suffix') || '';
+      var duration = 1800;
+      var start = performance.now();
+      var startVal = 0;
+      function step(now) {
+        var prog = Math.min((now - start) / duration, 1);
+        /* ease out cubic */
+        var ease = 1 - Math.pow(1 - prog, 3);
+        var val = Math.round(startVal + (target - startVal) * ease);
+        el.textContent = val.toLocaleString() + suffix;
+        if (prog < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+      counterObs.unobserve(el);
+    }
+  });
+}, {threshold: 0.5});
+document.querySelectorAll('.counter').forEach(function(el) { counterObs.observe(el); });
+
+/* ===== SUBSCRIPTION TOAST ===== */
+document.querySelectorAll('[data-toast]').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    showToast(btn.getAttribute('data-toast'));
+  });
+});
 
 /* ===== LIGHTBOX ===== */
 var lb = document.getElementById('lb');
@@ -516,7 +1438,7 @@ function renderLb() {
   lbInner.style.opacity = '0';
   setTimeout(function() {
     lbInner.style.background = bgMap[item.bg] || 'var(--charcoal)';
-    lbInner.innerHTML = '';
+    while (lbInner.firstChild) lbInner.removeChild(lbInner.firstChild);
     lbInner.style.opacity = '1';
   }, 150);
   if (item.title) { lbCap.style.display = ''; lbCap.textContent = item.title; }
